@@ -1,0 +1,1590 @@
+openapi: "3.1.0"
+info:
+  version: "1.0.0"
+  title: "SkillSwap API"
+  description: Marketplace interno de troca de mentorias
+
+tags:
+  - name: Usuários (Admin)
+    description: Endpoints restritos para a governança do administrador.
+  - name: Usuários (Colaborador)
+    description: Endpoints de acesso geral para o usuário logado.
+  - name: Mentorias
+    description: Fluxo principal de troca de conhecimentos.
+  - name: Marketplace (Admin)
+    description: Gestão de catálogo, estoque e preços das recompensas.
+  - name: Marketplace (Colaborador)
+    description: Vitrine de produtos e fluxo de resgate de pontos.
+  - name: Auditoria (Admin)
+    description: Rastreabilidade total das ações críticas e governança do sistema.
+
+servers:
+  - url: http://localhost:5000
+    description: Servidor de Desenvolvimento Local
+  - url: https://api.skillswap.com
+    description: Servidor de Produção
+
+paths:
+  /api/v1/usuario/{id}:
+    parameters:
+      - name: id
+        description: A identificação única do usuário
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UsuarioId"
+    get:
+      tags:
+        - Usuários (Admin)
+      summary: Lê um usuário
+      responses:
+        "200":
+          description: O usuário correspondente ao `UsuarioId` providenciado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsuarioDTO"
+        "404":
+          description: Nenhum usuário encontrado com o `UsuarioId` providenciado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Erro inesperado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      tags:
+        - Usuários (Admin)
+      summary: Atualiza dados básicos do usuário
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UsuarioId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AtualizarUsuarioRequestDTO"
+      responses:
+        "200":
+          description: Usuário atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsuarioDTO"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    delete:
+      tags:
+        - Usuários (Admin)
+      summary: Remove um colaborador
+      description: De acordo com a regra, a remoção exige consentimento ou ação do ADM
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UsuarioId"
+      responses:
+        "204":
+          description: Usuário removido com sucesso (sem conteúdo)
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /api/v1/usuario:
+    post:
+      tags:
+        - Usuários (Admin)
+      summary: Cadastra um novo usuário
+      description: Cria uma nova conta e retorna os dados do usuário gerado.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CriarUsuarioRequestDTO"
+      responses:
+        "201":
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsuarioDTO"
+        "400":
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Erro inesperado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /api/v1/usuario/{id}/congelar:
+    patch:
+      tags:
+        - Usuários (Admin)
+      summary: Congela a conta do usuário por um prazo determinado
+      description: Regra de negócio para suspensão temporária de atividades
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UsuarioId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CongelarUsuarioRequestDTO"
+      responses:
+        "200":
+          description: Status de congelamento aplicado
+        "400":
+          description: Prazo de congelamento inválido
+
+  /api/v1/usuario/{id}/informacoes:
+    get:
+      tags:
+        - Usuários (Admin)
+      summary: Busca informações detalhadas (contato e endereço)
+      description: Dados provenientes da tabela INFORMACOES do DER
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UsuarioId"
+      responses:
+        "200":
+          description: Retorna informações detalhadas do usuário
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InformacoesDTO"
+
+    put:
+      tags:
+        - Usuários (Admin)
+      summary: Atualiza informações de contato e endereço
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UsuarioId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InformacoesDTO"
+      responses:
+        "200":
+          description: Informações atualizadas
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InformacoesDTO"
+
+  /api/v1/usuario/{id}/carteira:
+    get:
+      tags:
+        - Usuários (Admin)
+      summary: Consulta o resumo da carteira do usuário
+      description: Retorna o ID da carteira e o saldo atual (calculado a partir do ledger).
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UsuarioId"
+      responses:
+        "200":
+          description: Carteira encontrada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CarteiraDTO"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /api/v1/usuario/{id}/carteira/transacoes:
+    get:
+      tags:
+        - Usuários (Admin)
+      summary: Lista o extrato de transações do usuário
+      description: Retorna todo o histórico de créditos e débitos da carteira para auditoria do ADM.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UsuarioId"
+      responses:
+        "200":
+          description: Lista de transações retornada com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TransacaoDTO"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    post:
+      tags:
+        - Usuários (Admin)
+      summary: Lança uma transação manual (ADM)
+      description: Permite ao administrador adicionar ou remover pontos manualmente (ex. estorno ou bonificação).
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UsuarioId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LancamentoTransacaoRequestDTO"
+      responses:
+        "201":
+          description: Transação registrada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransacaoDTO"
+        "400":
+          description: Regra de negócio violada (ex. saldo insuficiente para débito manual)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /api/v1/usuario/{id}/conhecimentos:
+    get:
+      tags:
+        - Usuários (Admin)
+        - Usuários (Colaborador)
+      summary: Lista todos os conhecimentos de um usuário específico
+      description: Retorna a lista de habilidades cadastradas, níveis e status (ativo/pausado).
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UsuarioId"
+      responses:
+        "200":
+          description: Lista de conhecimentos retornada
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ConhecimentoDTO"
+
+    post:
+      tags:
+        - Usuários (Admin)
+      summary: Cadastra um novo conhecimento para o usuário (Pendente de Aprovação)
+      description: Adiciona uma nova habilidade. Lembre-se da regra de limite de 5 tipos por usuário.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UsuarioId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CriarConhecimentoRequestDTO"
+      responses:
+        "201":
+          description: Conhecimento registrado e aguardando análise do ADM
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConhecimentoDTO"
+
+  /api/v1/usuario/{id}/conhecimentos/{conhecimentoId}:
+    put:
+      tags:
+        - Usuários (Admin)
+      summary: Atualiza os detalhes de um conhecimento específico
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UsuarioId"
+        - name: conhecimentoId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CriarConhecimentoRequestDTO"
+      responses:
+        "200":
+          description: Conhecimento atualizado
+
+    patch:
+      tags:
+        - Usuários (Admin)
+      summary: Ativa ou desativa um conhecimento (Pausar habilidade)
+      description: Útil para a regra de "pausar automaticamente" se receber três avaliações nível 1.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UsuarioId"
+        - name: conhecimentoId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ativo:
+                  type: boolean
+      responses:
+        "200":
+          description: Status alterado com sucesso
+
+  /api/v1/usuario/{id}/avaliacoes:
+    get:
+      tags:
+        - Usuários (Admin)
+        - Usuários (Colaborador)
+      summary: Lista as avaliações recebidas pelo usuário
+      description: Histórico de notas e comentários deixados por mentorados após as sessões.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UsuarioId"
+      responses:
+        "200":
+          description: Lista de avaliações retornada
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AvaliacaoDTO"
+
+  /api/v1/usuario/{id}/avaliacoes/{avaliacaoId}/visibilidade:
+    patch:
+      tags:
+        - Usuários (Admin)
+      summary: Ocultar/Exibir feedback (Governança ADM)
+      description: Regra de negócio que permite ao ADM ocultar feedbacks que infrinjam normas sem apagar o log.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UsuarioId"
+        - name: avaliacaoId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                visivel:
+                  type: boolean
+      responses:
+        "200":
+          description: Visibilidade do feedback atualizada
+
+  /api/v1/usuario/{id}/agenda:
+    get:
+      tags:
+        - Usuários (Admin)
+        - Usuários (Colaborador)
+      summary: Lista a disponibilidade de agenda do usuário
+      description: Retorna os horários fixos (recorrentes) e as exceções de datas específicas.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UsuarioId"
+      responses:
+        "200":
+          description: Lista de horários retornada com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AgendaDTO"
+
+    post:
+      tags:
+        - Usuários (Admin)
+      summary: Adiciona um novo bloco de disponibilidade na agenda
+      description: Permite definir um horário recorrente (dia da semana) ou uma exceção específica (data exata).
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UsuarioId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CriarAgendaRequestDTO"
+      responses:
+        "201":
+          description: Horário de agenda registrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgendaDTO"
+        "400":
+          description: Conflito de horários ou formatação inválida
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /api/v1/usuario/{id}/agenda/{agendaId}:
+    delete:
+      tags:
+        - Usuários (Admin)
+      summary: Remove um bloco de disponibilidade da agenda
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UsuarioId"
+        - name: agendaId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Bloco removido com sucesso (Sem Conteúdo)
+
+  /api/v1/usuario/{id}/mentorias:
+    get:
+      tags:
+        - Usuários (Admin)
+        - Usuários (Colaborador)
+      summary: Lista todas as mentorias em que o usuário está envolvido
+      description: Retorna o histórico de mentorias filtrando pelo papel (mentor/mentorado) e status atual.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UsuarioId"
+        - name: papel
+          in: query
+          description: Filtra para ver onde o usuário ensinou ou aprendeu
+          required: false
+          schema:
+            type: string
+            enum: [mentor, mentorado]
+        - name: status
+          in: query
+          description: Filtra pelo andamento da mentoria
+          required: false
+          schema:
+            type: string
+            enum: [AGENDADA, AGUARDANDO_CONCLUSAO, CONCLUIDA, CANCELADA]
+      responses:
+        "200":
+          description: Histórico de mentorias listado
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MentoriaDTO"
+
+  /api/v1/me:
+    get:
+      tags:
+        - Usuários (Colaborador)
+      summary: Retorna o perfil do usuário logado
+      responses:
+        "200":
+          description: Perfil carregado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsuarioDTO"
+
+    put:
+      tags:
+        - Usuários (Colaborador)
+      summary: Atualiza o próprio perfil básico
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                  description: O usuário só pode alterar o próprio nome, nunca a própria role.
+      responses:
+        "200":
+          description: Perfil atualizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsuarioDTO"
+
+  /api/v1/me/informacoes:
+    get:
+      tags:
+        - Usuários (Colaborador)
+      summary: Retorna os dados de contato e endereço do usuário logado
+      responses:
+        "200":
+          description: Retorna as informações
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InformacoesDTO"
+    put:
+      tags:
+        - Usuários (Colaborador)
+      summary: Atualiza os próprios dados de contato e endereço
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InformacoesDTO"
+      responses:
+        "200":
+          description: Informações atualizadas
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InformacoesDTO"
+
+  /api/v1/me/carteira:
+    get:
+      tags:
+        - Usuários (Colaborador)
+      summary: Consulta o próprio saldo de pontos
+      responses:
+        "200":
+          description: Retorna o saldo atual em pontos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CarteiraDTO"
+
+  /api/v1/me/carteira/transacoes:
+    get:
+      tags:
+        - Usuários (Colaborador)
+      summary: Consulta o próprio extrato de pontos
+      responses:
+        "200":
+          description: Retorna o extrato de pontos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TransacaoDTO"
+
+  /api/v1/me/conhecimentos:
+    get:
+      tags:
+        - Usuários (Colaborador)
+      summary: Lista as habilidades que o usuário logado oferece
+      responses:
+        "200":
+          description: Retorna as habilidades
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ConhecimentoDTO"
+    post:
+      tags:
+        - Usuários (Colaborador)
+      summary: Submete uma nova habilidade (Sujeito à aprovação do ADM)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CriarConhecimentoRequestDTO"
+      responses:
+        "201":
+          description: Conhecimento registrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConhecimentoDTO"
+
+  /api/v1/me/conhecimentos/{conhecimentoId}:
+    put:
+      tags:
+        - Usuários (Colaborador)
+      summary: Edita a descrição ou título de um conhecimento próprio
+      parameters:
+        - name: conhecimentoId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CriarConhecimentoRequestDTO"
+      responses:
+        "200":
+          description: Conhecimento atualizado
+
+  /api/v1/me/conhecimentos/{conhecimentoId}/ativo:
+    patch:
+      tags:
+        - Usuários (Colaborador)
+      summary: Pausa temporariamente uma habilidade própria
+      description: O usuário pode escolher não receber pedidos para essa habilidade momentaneamente.
+      parameters:
+        - name: conhecimentoId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ativo:
+                  type: boolean
+      responses:
+        "200":
+          description: Status atualizado
+
+  /api/v1/me/agenda:
+    get:
+      tags:
+        - Usuários (Colaborador)
+      summary: Visualiza a própria agenda livre
+      responses:
+        "200":
+          description: Retorna a agenda livre
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AgendaDTO"
+    post:
+      tags:
+        - Usuários (Colaborador)
+      summary: Adiciona horários disponíveis na própria agenda
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CriarAgendaRequestDTO"
+      responses:
+        "201":
+          description: Horário adicionado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgendaDTO"
+
+  /api/v1/me/agenda/{agendaId}:
+    delete:
+      tags:
+        - Usuários (Colaborador)
+      summary: Remove um horário da própria agenda
+      parameters:
+        - name: agendaId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Removido com sucesso
+
+  /api/v1/me/mentorias:
+    get:
+      tags:
+        - Usuários (Colaborador)
+      summary: Lista as mentorias agendadas do usuário logado
+      parameters:
+        - name: papel
+          in: query
+          description: Filtra para ver onde vou ensinar ou aprender
+          required: false
+          schema:
+            type: string
+            enum: [mentor, mentorado]
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [AGENDADA, AGUARDANDO_CONCLUSAO, CONCLUIDA, CANCELADA]
+      responses:
+        "200":
+          description: Retorna as mentorias
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MentoriaDTO"
+
+  /api/v1/me/avaliacoes:
+    get:
+      tags:
+        - Usuários (Colaborador)
+      summary: Visualiza os feedbacks recebidos pelas mentorias que deu
+      responses:
+        "200":
+          description: Retorna os feedbacks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AvaliacaoDTO"
+
+  /api/v1/mentorias/{mentoriaId}/intervencao-adm:
+    post:
+      tags:
+        - Usuários (Admin)
+        - Mentorias
+      summary: Intervenção forçada do ADM (Conclusão ou Cancelamento)
+      description: Acionado quando ocorre omissão de uma das partes após X horas (SLA quebrado).
+      parameters:
+        - name: mentoriaId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IntervencaoMentoriaRequestDTO"
+      responses:
+        "200":
+          description: Intervenção registrada com sucesso, pontos liberados/congelados
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MentoriaDTO"
+        "400":
+          description: SLA de horas de omissão ainda não foi atingido
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /api/v1/mentorias:
+    post:
+      tags:
+        - Usuários (Admin)
+        - Usuários (Colaborador)
+        - Mentorias
+      summary: Solicita o agendamento de uma nova mentoria
+      description: Inicia o processo. A mentoria nasce com o status AGUARDANDO_ACEITE.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AgendarMentoriaRequestDTO"
+      responses:
+        "201":
+          description: Pedido de mentoria enviado ao mentor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MentoriaDTO"
+
+  /api/v1/mentorias/{id}/status:
+    patch:
+      tags:
+        - Usuários (Admin)
+        - Usuários (Colaborador)
+        - Mentorias
+      summary: Aceita ou recusa uma solicitação de mentoria
+      description: Mentor tem prazo (ex. 48h) para responder. Se recusar, o horário volta para a agenda livre.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [acao]
+              properties:
+                acao:
+                  type: string
+                  enum: [ACEITAR, RECUSAR]
+      responses:
+        "200":
+          description: Status da mentoria atualizado
+
+  /api/v1/mentorias/{id}/cancelamento:
+    patch:
+      tags:
+        - Usuários (Admin)
+        - Mentorias
+      summary: Cancela uma mentoria já agendada
+      description: C# fará o cálculo se gera multa baseada na regra das 24h de antecedência.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [motivo]
+              properties:
+                motivo:
+                  type: string
+      responses:
+        "200":
+          description: Mentoria cancelada (Retorna o status da multa aplicada)
+
+  /api/v1/mentorias/{id}/conclusao:
+    post:
+      tags:
+        - Usuários (Admin)
+        - Usuários (Colaborador)
+        - Mentorias
+      summary: Registra o 'OK' de uma das partes para conclusão
+      description: Quando a segunda parte chamar este endpoint, o C# muda o status para CONCLUIDO e transfere os pontos.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [usuario_id]
+              properties:
+                usuario_id:
+                  type: string
+                  format: uuid
+                  description: ID de quem está apertando o botão de conclusão
+      responses:
+        "200":
+          description: Consenso registrado com sucesso
+
+  /api/v1/mentorias/{id}/avaliacoes:
+    post:
+      tags:
+        - Usuários (Admin)
+        - Usuários (Colaborador)
+        - Mentorias
+      summary: Avalia a mentoria após a conclusão
+      description: Afeta a média do conhecimento do mentor.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CriarAvaliacaoRequestDTO"
+      responses:
+        "201":
+          description: Avaliação registrada
+
+  /api/v1/marketplace/itens:
+    get:
+      tags:
+        - Marketplace (Colaborador)
+        - Marketplace (Admin)
+      summary: Lista os itens disponíveis no catálogo
+      description: Retorna a vitrine de recompensas. Para a visão do colaborador, o C# deve filtrar e retornar apenas os itens onde 'quantidade' > 0.
+      responses:
+        "200":
+          description: Retorna itens do marketplace
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ItemDTO"
+
+    post:
+      tags:
+        - Marketplace (Admin)
+      summary: Cadastra uma nova recompensa no catálogo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CriarItemRequestDTO"
+      responses:
+        "201":
+          description: Recompensa cadastrada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ItemDTO"
+
+  /api/v1/marketplace/itens/{itemId}:
+    put:
+      tags:
+        - Marketplace (Admin)
+      summary: Atualiza um item (preço, estoque, descrição)
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CriarItemRequestDTO"
+      responses:
+        "200":
+          description: Item atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ItemDTO"
+
+    delete:
+      tags:
+        - Marketplace (Admin)
+      summary: Remove um item do catálogo
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Item removido (Sem conteúdo)
+
+  /api/v1/me/carteira/resgatar-item:
+    post:
+      tags:
+        - Usuários (Colaborador)
+        - Marketplace (Colaborador)
+      summary: Troca pontos do saldo por um item do marketplace
+      description: O backend verificará o saldo atual, abaterá do estoque do item e criará um registro DEBITO na carteira do usuário.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [item_id]
+              properties:
+                item_id:
+                  type: string
+                  format: uuid
+                  description: ID do item que o usuário deseja resgatar
+      responses:
+        "200":
+          description: Resgate aprovado e saldo deduzido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mensagem:
+                    type: string
+                    example: "Resgate realizado com sucesso! Procure o RH para retirar seu item."
+                  novo_saldo:
+                    type: integer
+                  transacao_id:
+                    type: string
+                    format: uuid
+                    description: ID do comprovante gerado na carteira
+        "400":
+          description: Falha na regra de negócio (ex. Saldo insuficiente ou produto esgotado)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /api/v1/auditoria/logs:
+    get:
+      tags:
+        - Auditoria (Admin)
+      summary: Lista o histórico de ações do sistema (Audit Trail)
+      description: Permite ao ADM rastrear tudo. Pode filtrar por entidade afetada, ação específica ou investigar um usuário.
+      parameters:
+        - name: entidade_afetada
+          in: query
+          description: Filtra pela tabela/domínio (ex. MENTORIA, AVALIACAO, CARTEIRA)
+          required: false
+          schema:
+            type: string
+        - name: acao
+          in: query
+          description: Filtra por um evento (ex. OCULTACAO_FEEDBACK, INTERVENCAO_CONCLUSAO)
+          required: false
+          schema:
+            type: string
+        - name: usuario_ator_id
+          in: query
+          description: Filtra para ver todas as ações que um usuário ou ADM específico realizou
+          required: false
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Histórico de logs retornado com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LogSistemaDTO"
+
+components:
+  schemas:
+    UsuarioId:
+      description: O identificador único do usuário (UUID)
+      type: string
+      format: uuid
+
+    UsuarioDTO:
+      type: object
+      required:
+        - id
+        - nome
+        - role
+      properties:
+        id:
+          $ref: "#/components/schemas/UsuarioId"
+        nome:
+          type: string
+        role:
+          type: string
+          enum:
+            - admin
+            - usuario
+
+    CriarUsuarioRequestDTO:
+      type: object
+      required:
+        - nome
+        - email
+        - telefone
+        - senha
+      properties:
+        nome:
+          type: string
+          description: Nome completo do usuário
+        email:
+          type: string
+          format: email
+          description: Email de acesso do usuário
+        telefone:
+          type: string
+          description: Telefone de contato (apenas números)
+        senha:
+          type: string
+          format: password
+
+    AtualizarUsuarioRequestDTO:
+      type: object
+      properties:
+        nome:
+          type: string
+        role:
+          type: string
+          enum: [admin, usuario]
+
+    CongelarUsuarioRequestDTO:
+      type: object
+      required:
+        - data_expiracao
+      properties:
+        data_expiracao:
+          type: string
+          format: date-time
+          description: Prazo limite para o congelamento
+        motivo:
+          type: string
+
+    InformacoesDTO:
+      type: object
+      description: Mapeamento completo da tabela INFORMACOES
+      properties:
+        email:
+          type: string
+          format: email
+        telefone:
+          type: string
+        endereco_rua:
+          type: string
+        endereco_numero:
+          type: string
+        endereco_bairro:
+          type: string
+        endereco_cidade:
+          type: string
+        endereco_estado:
+          type: string
+        endereco_cep:
+          type: string
+
+    CarteiraId:
+      description: Identificador único da carteira
+      type: string
+      format: uuid
+
+    TransacaoId:
+      description: Identificador único da transação
+      type: string
+      format: uuid
+
+    CarteiraDTO:
+      type: object
+      required:
+        - id
+        - usuario_id
+        - saldo_atual
+      properties:
+        id:
+          $ref: "#/components/schemas/CarteiraId"
+        usuario_id:
+          $ref: "#/components/schemas/UsuarioId"
+        saldo_atual:
+          type: integer
+          description: Saldo total calculado (soma dos créditos menos os débitos)
+
+    TransacaoDTO:
+      type: object
+      required:
+        - id
+        - tipo_transacao
+        - valor_pontos
+        - data_criacao
+      properties:
+        id:
+          $ref: "#/components/schemas/TransacaoId"
+        tipo_transacao:
+          type: string
+          enum: [CREDITO, DEBITO]
+          description: Indica se os pontos estão entrando ou saindo
+        valor_pontos:
+          type: integer
+          description: Valor absoluto da transação (sempre positivo)
+        origem_mentoria_id:
+          type: string
+          format: uuid
+          description: Preenchido se o crédito veio de uma mentoria concluída
+        item_resgatado_id:
+          type: string
+          format: uuid
+          description: Preenchido se o débito foi para resgatar um item do marketplace
+        descricao_motivo:
+          type: string
+          description: Explicação em texto (vital para auditoria de estornos)
+        data_criacao:
+          type: string
+          format: date-time
+
+    LancamentoTransacaoRequestDTO:
+      type: object
+      required:
+        - tipo_transacao
+        - valor_pontos
+        - motivo
+      properties:
+        tipo_transacao:
+          type: string
+          enum: [CREDITO, DEBITO]
+        valor_pontos:
+          type: integer
+          minimum: 1
+        motivo:
+          type: string
+          description: Motivo do lançamento manual para ficar registrado nos logs
+
+    ConhecimentoDTO:
+      type: object
+      required: [id, titulo, nivel, ativo]
+      properties:
+        id:
+          type: string
+          format: uuid
+        titulo:
+          type: string
+        descricao:
+          type: string
+        tempo:
+          type: string
+          description: Tempo estimado da mentoria (ex. "01:00:00")
+        valor:
+          type: integer
+          description: Valor em pontos definido pelo ADM
+        nivel:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Nível de proficiência (inicia em zero conforme regra)
+        ativo:
+          type: boolean
+          description: Se a habilidade está disponível para novas mentorias
+
+    CriarConhecimentoRequestDTO:
+      type: object
+      required: [titulo, descricao]
+      properties:
+        titulo:
+          type: string
+          maxLength: 100
+        descricao:
+          type: string
+          maxLength: 250
+        tempo:
+          type: string
+          example: "01:00:00"
+
+    AvaliacaoDTO:
+      type: object
+      required: [id, nota, titulo]
+      properties:
+        id:
+          type: string
+          format: uuid
+        mentoria_id:
+          type: string
+          format: uuid
+        titulo:
+          type: string
+        descricao:
+          type: string
+        nota:
+          type: integer
+          minimum: 1
+          maximum: 5
+        visivel:
+          type: boolean
+          description: Define se o feedback aparece no perfil público do usuário
+
+    AgendaDTO:
+      type: object
+      required: [id, usuario_id, hora_inicio, hora_fim, ativo]
+      properties:
+        id:
+          type: string
+          format: uuid
+        usuario_id:
+          $ref: "#/components/schemas/UsuarioId"
+        dia_semana:
+          type: integer
+          minimum: 0
+          maximum: 6
+          description: "0 = Domingo, 1 = Segunda, ..., 6 = Sábado. Nulo se for data_especifica."
+          nullable: true
+        data_especifica:
+          type: string
+          format: date
+          description: "Usado para exceções (ex: feriados ou dias pontuais). Nulo se for dia_semana."
+          nullable: true
+        hora_inicio:
+          type: string
+          example: "14:00"
+        hora_fim:
+          type: string
+          example: "15:00"
+        ativo:
+          type: boolean
+
+    CriarAgendaRequestDTO:
+      type: object
+      required: [hora_inicio, hora_fim]
+      properties:
+        dia_semana:
+          type: integer
+          minimum: 0
+          maximum: 6
+          nullable: true
+        data_especifica:
+          type: string
+          format: date
+          nullable: true
+        hora_inicio:
+          type: string
+          example: "14:00"
+        hora_fim:
+          type: string
+          example: "15:00"
+
+    MentoriaDTO:
+      type: object
+      required:
+        [id, conhecimento_id, mentor_id, mentorado_id, status, data_agendamento]
+      properties:
+        id:
+          type: string
+          format: uuid
+        conhecimento_id:
+          type: string
+          format: uuid
+        mentor_id:
+          $ref: "#/components/schemas/UsuarioId"
+        mentorado_id:
+          $ref: "#/components/schemas/UsuarioId"
+        status:
+          type: string
+          enum: [AGENDADA, AGUARDANDO_CONCLUSAO, CONCLUIDA, CANCELADA]
+        data_agendamento:
+          type: string
+          format: date-time
+        conclusao_mentor:
+          type: string
+          format: date-time
+          nullable: true
+          description: Carimbo de tempo de quando o mentor clicou em concluir
+        conclusao_mentorado:
+          type: string
+          format: date-time
+          nullable: true
+          description: Carimbo de tempo de quando o mentorado clicou em concluir
+
+    AgendarMentoriaRequestDTO:
+      type: object
+      required:
+        - conhecimento_id
+        - mentor_id
+        - data_agendamento
+      properties:
+        conhecimento_id:
+          type: string
+          format: uuid
+          description: ID da habilidade que o mentorado deseja aprender
+        mentor_id:
+          type: string
+          format: uuid
+          description: ID do usuário que fornecerá a mentoria
+        data_agendamento:
+          type: string
+          format: date-time
+          description: Data e hora escolhidas pelo mentorado (deve cruzar com a Agenda Livre do mentor)
+
+    CriarAvaliacaoRequestDTO:
+      type: object
+      required:
+        - titulo
+        - nota
+      properties:
+        titulo:
+          type: string
+          maxLength: 100
+          description: Um título breve para o feedback
+        descricao:
+          type: string
+          maxLength: 250
+          description: Feedback detalhado sobre a sessão e a didática
+        nota:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Avaliação de 1 a 5 estrelas que impactará o nível geral do usuário
+
+    IntervencaoMentoriaRequestDTO:
+      type: object
+      required: [acao, motivo]
+      properties:
+        acao:
+          type: string
+          enum:
+            [FORCAR_CONCLUSAO, CANCELAR_COM_PENALIDADE, CANCELAR_SEM_PENALIDADE]
+          description: Define qual regra de negócio será aplicada sobre a disputa
+        motivo:
+          type: string
+          description: Detalhe técnico da intervenção para a tabela de LOGS_SISTEMA
+
+    ItemDTO:
+      type: object
+      required: [id, titulo, valor, quantidade]
+      properties:
+        id:
+          type: string
+          format: uuid
+        titulo:
+          type: string
+          maxLength: 100
+        descricao:
+          type: string
+          maxLength: 250
+        imagem:
+          type: string
+          maxLength: 100
+          description: URL ou caminho da imagem hospedada (ex. AWS S3 ou pasta local)
+        valor:
+          type: integer
+          description: Preço do item em pontos
+        quantidade:
+          type: integer
+          description: Estoque atual disponível
+
+    CriarItemRequestDTO:
+      type: object
+      required: [titulo, descricao, valor, quantidade]
+      properties:
+        titulo:
+          type: string
+          maxLength: 100
+        descricao:
+          type: string
+          maxLength: 250
+        imagem:
+          type: string
+          maxLength: 100
+        valor:
+          type: integer
+          minimum: 1
+        quantidade:
+          type: integer
+          minimum: 0
+
+    LogSistemaDTO:
+      type: object
+      required:
+        [id, entidade_afetada, entidade_id, acao, usuario_ator_id, data_criacao]
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: PK do log (log_id)
+        entidade_afetada:
+          type: string
+          maxLength: 25
+          description: Qual tabela/domínio foi alterado (ex. MENTORIA, AVALIACAO, USUARIO)
+        entidade_id:
+          type: string
+          format: uuid
+          description: O ID específico do registro que foi alterado
+        acao:
+          type: string
+          maxLength: 50
+          description: A operação realizada (ex. START, CONCLUSAO, CANCELAMENTO_TARDIO)
+        usuario_ator_id:
+          type: string
+          format: uuid
+          description: Quem disparou a ação (Pode ser um colaborador ou o próprio ADM)
+        data_criacao:
+          type: string
+          format: date-time
+          description: Carimbo de tempo exato da ocorrência
+
+    Error:
+      type: object
+      required:
+        - mensagem
+      properties:
+        mensagem:
+          description: Uma mensagem de erro compreensível para o usuário
+          type: string
+
+  responses:
+    NotFound:
+      description: O recurso solicitado não foi encontrado
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+
+security:
+  - ApiKey: []
