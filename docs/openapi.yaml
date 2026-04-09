@@ -17,6 +17,8 @@ tags:
     description: Vitrine de produtos e fluxo de resgate de pontos.
   - name: Auditoria (Admin)
     description: Rastreabilidade total das ações críticas e governança do sistema.
+  - name: Onboarding (Setup)
+    description: Fluxo inicial de criação da empresa e do primeiro administrador após a venda do produto.
 
 servers:
   - url: http://localhost:5000
@@ -25,6 +27,43 @@ servers:
     description: Servidor de Produção
 
 paths:
+  /api/v1/onboarding/setup:
+    post:
+      tags:
+        - Onboarding (Setup)
+      summary: Configura a empresa e o administrador inicial
+      description: Endpoint acessado através do link exclusivo gerado pela plataforma matriz. Instancia o banco isolado e cria o 1º acesso.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SetupEmpresaRequestDTO"
+      responses:
+        "201":
+          description: Empresa e Administrador criados com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mensagem:
+                    type: string
+                    example: "Ambiente criado com sucesso! Faça o login para acessar o painel."
+                  empresa_id:
+                    type: string
+                    format: uuid
+                  admin_id:
+                    type: string
+                    format: uuid
+        "400":
+          description: Token de convite inválido ou expirado.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
   /api/v1/usuario/{id}:
     parameters:
       - name: id
@@ -1132,6 +1171,29 @@ paths:
 
 components:
   schemas:
+    SetupEmpresaRequestDTO:
+      type: object
+      required: [token_convite, dados_empresa, dados_admin]
+      properties:
+        token_convite:
+          type: string
+          description: O hash único que estava no link enviado para o e-mail do cliente (ex. skillswap.com/setup?token=ABC123XYZ)
+        dados_empresa:
+          type: object
+          required: [razao_social, cnpj]
+          properties:
+            razao_social:
+              type: string
+              maxLength: 150
+            cnpj:
+              type: string
+              description: Apenas números
+            dominio_acesso:
+              type: string
+              description: Opcional. Exemplo "empresaX" para criar o subdominio empresax.skillswap.com
+        dados_admin:
+          $ref: "#/components/schemas/CriarUsuarioRequestDTO"
+
     UsuarioId:
       description: O identificador único do usuário (UUID)
       type: string
