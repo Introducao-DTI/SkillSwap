@@ -1,7 +1,6 @@
-import "./App.css";
 
 function App() {
-  return <h1>Olá Mundo! SkillSwap</h1>;
+  return <h4>Olá Mundo! SkillSwap</h4>;
 }
 
 export default App;

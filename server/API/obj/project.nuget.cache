@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "2JvWhgIpBC4=",
+  "dgSpecHash": "0jYm1dK5hog=",
   "success": true,
-  "projectFilePath": "/Users/falvesmac/Dev/SkillSwap/server/API/API.csproj",
+  "projectFilePath": "C:\\Users\\dti-\\Documents\\Projetos\\SkillSwap\\SkillSwap\\server\\API\\API.csproj",
   "expectedPackageFiles": [
-    "/Users/falvesmac/.nuget/packages/microsoft.aspnetcore.openapi/10.0.5/microsoft.aspnetcore.openapi.10.0.5.nupkg.sha512",
-    "/Users/falvesmac/.nuget/packages/microsoft.openapi/2.0.0/microsoft.openapi.2.0.0.nupkg.sha512"
+    "C:\\Users\\dti-\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.5\\microsoft.aspnetcore.openapi.10.0.5.nupkg.sha512",
+    "C:\\Users\\dti-\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512"
   ],
   "logs": []
 }
