@@ -1,5 +1,4 @@
 using SkillSwap.Core.Usuarios.Exceptions;
-using SkillSwap.Core.Usuarios.ValueObjects;
 
 namespace SkillSwap.Core.Usuarios.ValueObjects;
 

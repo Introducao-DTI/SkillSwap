@@ -14,14 +14,25 @@ public class SkillSwapDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<Usuario>(usuario =>
+        {
+            usuario.HasKey(u => u.Id);
 
-        modelBuilder.Entity<InformacoesUsuario>()
-            .OwnsOne(i => i.Endereco);
+            usuario.Property(u => u.Role).HasConversion<string>();
 
-        modelBuilder.Entity<Usuario>()
-            .HasOne(u => u.Perfil)
-            .WithOne()
-            .HasForeignKey<InformacoesUsuario>(i => i.UsuarioId);
+            usuario.Property(u => u.Status).HasConversion<string>();
+
+            usuario.OwnsOne(u => u.Perfil, perfil =>
+            {
+                perfil.OwnsOne(p => p.Telefone);
+
+                perfil.OwnsOne(p => p.Endereco);
+
+                perfil.OwnsOne(p => p.Empresa, empresa =>
+                {
+                    empresa.OwnsOne(e => e.CNPJ);
+                });
+            });
+        });
     }
 }
