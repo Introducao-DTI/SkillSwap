@@ -10,34 +10,22 @@ namespace SkillSwap.API.Controllers;
 public class UsuarioController(IUsuarioService usuarioService) : ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> CriarUsuario([FromBody] CriarUsuarioRequestDTO criarUsuarioRequestDTO)
+    public async Task<IActionResult> CriarUsuario([FromBody] CriarUsuarioRequestDTO dto)
     {
-        try
-        {
-            var usuarioDTO = await usuarioService.CriarUsuarioAsync(criarUsuarioRequestDTO);
-            return CreatedAtAction(nameof(ObterUsuarioPorId), new { id = usuarioDTO.Id }, usuarioDTO);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        var resultado = await usuarioService.CriarUsuarioAsync(dto);
+
+        return resultado.Sucesso
+            ? CreatedAtAction(nameof(ObterUsuarioPorId), new { id = resultado.Value!.Id }, resultado.Value)
+            : Conflict(resultado.Erro);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> ObterUsuarioPorId(Guid id)
     {
-        try
-        {
-            var usuarioDTO = await usuarioService.ObterUsuarioPorIdAsync(id);
-            return Ok(usuarioDTO);
-        }
-        catch (UsuarioNaoEncontradoException ex)
-        {
-            return NotFound(ex.Message);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        var resultado = await usuarioService.ObterUsuarioPorIdAsync(id);
+
+        return resultado.Sucesso
+            ? Ok(resultado.Value)
+            : NotFound(resultado.Erro);
     }
 }
