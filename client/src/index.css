@@ -36,6 +36,15 @@
     --line-height-link: 1.5;
     
     --letter-spacing-button: 0.5px;
+    
+    --color-primary-dark: #00408C;
+    --color-primary-light: #96ADD6;
+
+    --color-accent-red: #E85234;
+    --color-accent-peach: #F98BAF;
+
+    --color-neutral-cream: #F2EEE9;
+    --color-neutral-pink: #F2D7D3;
 }
 
 @layer base {
