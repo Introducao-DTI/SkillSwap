@@ -1,9 +1,8 @@
-using SkillSwap.Core.Usuarios.Models;
 using BC = BCrypt.Net.BCrypt;
 using SkillSwap.Core.Usuarios.Enums;
 using SkillSwap.Core.Usuarios.Ports.Out;
 
-namespace SkillSwap.Infrastructure.Services;
+namespace SkillSwap.Infrastructure.Security;
 
 public class SenhaService : ISenhaService
 {
