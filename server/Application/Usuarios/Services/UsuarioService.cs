@@ -3,6 +3,7 @@ using SkillSwap.Core.Shared;
 using SkillSwap.Core.Usuarios.Enums;
 using SkillSwap.Core.Usuarios.Ports.Out;
 using SkillSwap.Core.Usuarios.Models;
+using SkillSwap.Core.Usuarios.ValueObjects;
 
 namespace SkillSwap.Application.Usuarios.Services;
 
@@ -18,7 +19,8 @@ ISenhaService senhaService) : IUsuarioService
         var senhaHash = senhaService.HashSenha(dto.Senha);
 
         var usuario = new Usuario(dto.Email, RoleEnum.Usuario, senhaHash);
-        var perfil = new InformacoesUsuario(usuario.Id, dto.Nome, dto.Telefone, null!);
+        var telefone = new Telefone(dto.Telefone);
+        var perfil = new InformacoesUsuario(usuario.Id, dto.Nome, telefone);
 
         usuario.DefinirPerfil(perfil);
 
