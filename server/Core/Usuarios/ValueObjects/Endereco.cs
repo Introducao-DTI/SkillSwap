@@ -1,18 +1,20 @@
 using SkillSwap.Core.Usuarios.Exceptions;
 
-namespace SkillSwap.Core.Usuarios;
+namespace SkillSwap.Core.Usuarios.ValueObjects;
 
-public class Endereco
+public record Endereco
 {
-    public string Rua { get; private set; }
-    public string Numero { get; private set; }
-    public string Complemento { get; private set; }
-    public string Bairro { get; private set; }
-    public string Cidade { get; private set; }
-    public string Estado { get; private set; }
-    public string Cep { get; private set; }
+    public string Rua { get; init; }
+    public string Numero { get; init; }
+    public string? Complemento { get; init; }
+    public string Bairro { get; init; }
+    public string Cidade { get; init; }
+    public string Estado { get; init; }
+    public string Cep { get; init; }
 
-    public Endereco(string rua, string numero, string complemento, string bairro, string cidade, string estado, string cep)
+    public Endereco(string rua, string numero, string bairro,
+                    string cidade, string estado, string cep,
+                    string? complemento = null)
     {
         if (string.IsNullOrWhiteSpace(rua))
             throw new EnderecoInvalidoException("A rua é obrigatória.");
@@ -38,12 +40,13 @@ public class Endereco
         Bairro = bairro;
         Cidade = cidade;
         Estado = estado;
-        Cep = cep;
+        Cep = new string(cep.Where(char.IsDigit).ToArray());
     }
 
     protected Endereco()
     {
-        Rua = null!; Numero = null!; Complemento = null!;
-        Bairro = null!; Cidade = null!; Estado = null!; Cep = null!;
+        Rua = null!; Numero = null!;
+        Bairro = null!; Cidade = null!;
+        Estado = null!; Cep = null!;
     }
 }
