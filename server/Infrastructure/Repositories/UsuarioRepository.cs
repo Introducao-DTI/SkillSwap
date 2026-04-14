@@ -1,5 +1,5 @@
-using SkillSwap.Core.Usuarios.Repositories;
-using SkillSwap.Core.Usuarios;
+using SkillSwap.Core.Usuarios.Models;
+using SkillSwap.Core.Usuarios.Ports.Out;
 using SkillSwap.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 

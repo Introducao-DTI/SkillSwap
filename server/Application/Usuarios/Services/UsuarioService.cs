@@ -1,38 +1,39 @@
 using SkillSwap.Application.Usuarios.DTOs;
-using SkillSwap.Core.Usuarios;
+using SkillSwap.Core.Shared;
 using SkillSwap.Core.Usuarios.Enums;
-using SkillSwap.Core.Usuarios.Exceptions;
-using SkillSwap.Core.Usuarios.Repositories;
+using SkillSwap.Core.Usuarios.Ports.Out;
+using SkillSwap.Core.Usuarios.Models;
 
 namespace SkillSwap.Application.Usuarios.Services;
 
-public class UsuarioService(IUsuarioRepository usuarioRepository, ISenhaService senhaService) : IUsuarioService
+public class UsuarioService(
+IUsuarioRepository usuarioRepository,
+ISenhaService senhaService) : IUsuarioService
 {
-    public async Task<UsuarioDTO> CriarUsuarioAsync(CriarUsuarioRequestDTO dto)
+    public async Task<Result<UsuarioDTO>> CriarUsuarioAsync(CriarUsuarioRequestDTO dto)
     {
         if (await usuarioRepository.ExisteEmailAsync(dto.Email))
-        {
-            throw new EmailExistenteException("Este email já está em uso. Por favor, escolha outro.");
-        }
+            return Result<UsuarioDTO>.Falha("Este email já está em uso.");
 
         var senhaHash = senhaService.HashSenha(dto.Senha);
+
         var usuario = new Usuario(dto.Email, RoleEnum.Usuario, senhaHash);
         var perfil = new InformacoesUsuario(usuario.Id, dto.Nome, dto.Telefone, null!);
 
+        usuario.DefinirPerfil(perfil);
+
         await usuarioRepository.CriarUsuarioAsync(usuario, perfil);
 
-        return new UsuarioDTO(usuario.Id, perfil.Nome, usuario.Role);
+        return Result<UsuarioDTO>.Ok(new UsuarioDTO(usuario.Id, perfil.Nome, usuario.Role));
     }
 
-    public async Task<UsuarioDTO> ObterUsuarioPorIdAsync(Guid id)
+    public async Task<Result<UsuarioDTO>> ObterUsuarioPorIdAsync(Guid id)
     {
         var usuario = await usuarioRepository.ObterUsuarioPorIdAsync(id);
 
-        if (usuario == null)
-        {
-            throw new UsuarioNaoEncontradoException("Usuário não encontrado.");
-        }
+        if (usuario is null)
+            return Result<UsuarioDTO>.Falha("Usuário não encontrado.");
 
-        return new UsuarioDTO(usuario.Id, usuario.Perfil.Nome, usuario.Role);
+        return Result<UsuarioDTO>.Ok(new UsuarioDTO(usuario.Id, usuario.Perfil!.Nome, usuario.Role));
     }
 }

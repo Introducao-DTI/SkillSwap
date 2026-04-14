@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using SkillSwap.Core.Usuarios;
+using SkillSwap.Core.Usuarios.Models;
 
 namespace SkillSwap.Infrastructure.Data;
 

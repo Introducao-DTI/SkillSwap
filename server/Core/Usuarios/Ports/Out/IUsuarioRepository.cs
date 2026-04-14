@@ -1,4 +1,6 @@
-namespace SkillSwap.Core.Usuarios.Repositories;
+using SkillSwap.Core.Usuarios.Models;
+
+namespace SkillSwap.Core.Usuarios.Ports.Out;
 
 public interface IUsuarioRepository
 {
