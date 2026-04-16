@@ -3,6 +3,8 @@ import { Input } from "../../../components/Input";
 import { PageLayout } from "../../../components/PageLayout";
 import { CorpoPrincipal } from "../components/CorpoPrincipal";
 import { Divisor } from "../components/Divisor";
+import { FormLayout } from "../components/FormLayout";
+import { FormRow } from "../components/FormRow";
 import { Header } from "../components/Header";
 import { RodapeAcesso } from "../components/RodapeAcesso";
 import { TituloHeader } from "../components/TituloHeader";
@@ -30,18 +32,27 @@ const CriarContaPage = ({ emailConvite }: CriarContaPageProps) => {
           </>
         )}
 
-        <Input
-          placeholder="Email"
-          value={emailConvite}
-          variant="disabled"
-          fullWidth
-        />
-        <Input placeholder="Telefone" variant="secondary" fullWidth />
-        <Input placeholder="Senha" variant="secondary" fullWidth />
-        <Input placeholder="Confirme sua senha" variant="secondary" fullWidth />
-        <Button theme="accent-red" variant="primary" fullWidth>
-          Criar Acesso
-        </Button>
+        <FormLayout>
+          <FormRow cols={1}>
+            {" "}
+            <Input
+              placeholder="Email"
+              value={emailConvite}
+              variant="disabled"
+              fullWidth
+            />
+            <Input placeholder="Telefone" variant="secondary" fullWidth />
+            <Input placeholder="Senha" variant="secondary" fullWidth />
+            <Input
+              placeholder="Confirme sua senha"
+              variant="secondary"
+              fullWidth
+            />
+            <Button theme="accent-red" variant="primary" fullWidth>
+              Criar Acesso
+            </Button>
+          </FormRow>
+        </FormLayout>
       </CorpoPrincipal>
 
       <RodapeAcesso />

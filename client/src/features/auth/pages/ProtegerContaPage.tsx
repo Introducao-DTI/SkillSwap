@@ -7,6 +7,8 @@ import { Header } from "../components/Header";
 import { RodapeAcesso } from "../components/RodapeAcesso";
 import { TituloHeader } from "../components/TituloHeader";
 import { Select } from "../../../components/Select";
+import { FormLayout } from "../components/FormLayout";
+import { FormRow } from "../components/FormRow";
 
 const ProtegerContaPage = () => {
   return (
@@ -23,23 +25,27 @@ const ProtegerContaPage = () => {
       </Header>
 
       <CorpoPrincipal>
-        <Select
-          placeholder="Selecione seu perfil"
-          variant="secondary"
-          fullWidth
-          options={[
-            { value: "sms", label: "Mensagem de Texto" },
-            { value: "email", label: "Email" },
-          ]}
-        />
-        <Button variant="primary" fullWidth>
-          Enviar link de verificação
-        </Button>
-        <Input
-          placeholder="Código de verificação"
-          variant="secondary"
-          fullWidth
-        />
+        <FormLayout>
+          <FormRow cols={1}>
+            <Select
+              placeholder="Selecione seu perfil"
+              variant="secondary"
+              fullWidth
+              options={[
+                { value: "sms", label: "Mensagem de Texto" },
+                { value: "email", label: "Email" },
+              ]}
+            />
+            <Button variant="primary" fullWidth>
+              Enviar link de verificação
+            </Button>
+            <Input
+              placeholder="Código de verificação"
+              variant="secondary"
+              fullWidth
+            />
+          </FormRow>
+        </FormLayout>
         <p className="text-support">
           Em caso de dúvidas e/ou ajuda [entre em contato com a gente]
         </p>
