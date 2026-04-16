@@ -8,12 +8,9 @@ import { FormRow } from "../components/FormRow";
 import { Header } from "../components/Header";
 import { RodapeAcesso } from "../components/RodapeAcesso";
 import { TituloHeader } from "../components/TituloHeader";
+import type { CompleteDadosPageProps } from "../types";
 
-type Props = {
-  roleUsuario: string;
-};
-
-const CompleteDadosPage = ({ roleUsuario }: Props) => {
+const CompleteDadosPage = ({ roleUsuario }: CompleteDadosPageProps) => {
   return (
     <PageLayout>
       <Header>
@@ -64,9 +61,9 @@ const CompleteDadosPage = ({ roleUsuario }: Props) => {
                 />
               </FormRow>
 
-              <FormRow cols={1}>
-                <Input placeholder="Cidade" variant="secondary" fullWidth />
-                <Input placeholder="Estado" variant="secondary" fullWidth />
+              <FormRow cols={2}>
+                <Input placeholder="Cidade" />
+                <Input placeholder="Estado" />
               </FormRow>
             </>
           )}

@@ -1,16 +1,4 @@
-type Option = {
-  value: string;
-  label: string;
-};
-
-type Props = {
-  options: Option[];
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  placeholder?: string;
-  variant?: "primary" | "secondary" | "disabled";
-  fullWidth?: boolean;
-};
+import type { SelectProps } from "../types";
 
 export const Select = ({
   options,
@@ -19,7 +7,7 @@ export const Select = ({
   placeholder,
   variant = "secondary",
   fullWidth = false,
-}: Props) => {
+}: SelectProps) => {
   const variants = {
     primary: "bg-primary-dark text-neutral-cream",
     secondary: "bg-transparent border border-primary-dark text-primary-dark",

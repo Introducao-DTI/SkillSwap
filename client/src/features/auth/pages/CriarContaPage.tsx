@@ -6,12 +6,9 @@ import { Divisor } from "../components/Divisor";
 import { Header } from "../components/Header";
 import { RodapeAcesso } from "../components/RodapeAcesso";
 import { TituloHeader } from "../components/TituloHeader";
+import type { CriarContaPageProps } from "../types";
 
-type Props = {
-  emailConvite?: string;
-};
-
-const CriarContaPage = ({ emailConvite }: Props) => {
+const CriarContaPage = ({ emailConvite }: CriarContaPageProps) => {
   return (
     <PageLayout>
       <Header>
@@ -21,7 +18,7 @@ const CriarContaPage = ({ emailConvite }: Props) => {
       </Header>
 
       <CorpoPrincipal>
-        {!emailConvite ? (
+        {!emailConvite && (
           <>
             <Button variant="primary" fullWidth>
               Google
@@ -31,8 +28,6 @@ const CriarContaPage = ({ emailConvite }: Props) => {
             </Button>
             <Divisor />
           </>
-        ) : (
-          <></>
         )}
 
         <Input

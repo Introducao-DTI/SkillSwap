@@ -1,8 +1,6 @@
-type Props = {
-  children: React.ReactNode;
-};
+import type { PageLayoutProps } from "../types";
 
-export const PageLayout = ({ children }: Props) => {
+export const PageLayout = ({ children }: PageLayoutProps) => {
   return (
     <div
       className="

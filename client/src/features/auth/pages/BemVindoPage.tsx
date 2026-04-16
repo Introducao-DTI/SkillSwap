@@ -5,20 +5,14 @@ import { CorpoPrincipal } from "../components/CorpoPrincipal";
 import { Header } from "../components/Header";
 import { RodapeAcesso } from "../components/RodapeAcesso";
 import { TituloHeader } from "../components/TituloHeader";
+import type { BemVindoPageProps } from "../types";
 
-type Props = {
-  nomeUsuario: string;
-  roleUsuario: string;
-};
-
-const BemVindoPage = ({ nomeUsuario, roleUsuario }: Props) => {
+const BemVindoPage = ({ nomeUsuario, roleUsuario }: BemVindoPageProps) => {
   return (
     <PageLayout>
       <Header>
         <TituloHeader>
-          <div className="w-full">
-            <h1 className="text-left text-accent-red">Olá {nomeUsuario}!</h1>
-          </div>
+          <div className="w-full">Olá {nomeUsuario}!</div>
         </TituloHeader>
         <CaixaDeTexto>
           Bem vindo a plataforma SkillSwap um novo jeito de aprender com quem

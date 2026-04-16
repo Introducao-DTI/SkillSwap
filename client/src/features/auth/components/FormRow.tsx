@@ -1,9 +1,6 @@
-type Props = {
-  children: React.ReactNode;
-  cols?: 1 | 2 | 3;
-};
+import type { FormRowProps } from "../types";
 
-export const FormRow = ({ children, cols = 1 }: Props) => {
+export const FormRow = ({ children, cols = 1 }: FormRowProps) => {
   const colsMap = {
     1: "grid-cols-1",
     2: "grid-cols-2",

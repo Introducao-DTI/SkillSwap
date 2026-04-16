@@ -1,11 +1,4 @@
-type Props = {
-  placeholder?: string;
-  type?: "text" | "email" | "password" | "tel";
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  variant?: "primary" | "secondary" | "disabled";
-  fullWidth?: boolean;
-};
+import type { InputProps } from "../types";
 
 export const Input = ({
   placeholder,
@@ -14,7 +7,7 @@ export const Input = ({
   onChange,
   variant = "secondary",
   fullWidth = false,
-}: Props) => {
+}: InputProps) => {
   const variants = {
     primary:
       "bg-primary-dark text-neutral-cream placeholder:text-neutral-cream/60",

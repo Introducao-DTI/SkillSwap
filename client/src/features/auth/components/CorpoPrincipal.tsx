@@ -1,8 +1,6 @@
-type Props = {
-  children: React.ReactNode;
-};
+import type { CorpoPrincipalProps } from "../types";
 
-export const CorpoPrincipal = ({ children }: Props) => {
+export const CorpoPrincipal = ({ children }: CorpoPrincipalProps) => {
   return (
     <div
       className="

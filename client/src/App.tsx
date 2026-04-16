@@ -5,7 +5,7 @@ import CompleteDadosPage from "./features/auth/pages/CompleteDadosPage";
 import GerarConvitePage from "./features/auth/pages/GerarConvitePage";
 
 function App() {
-  return <GerarConvitePage />;
+  return <CompleteDadosPage roleUsuario="usuario" />;
 }
 
 export default App;

@@ -1,10 +1,4 @@
-type Props = {
-  children: React.ReactNode;
-  onClick?: () => void;
-  variant?: "primary" | "secondary";
-  fullWidth?: boolean;
-  theme?: "primary-dark" | "accent-red";
-};
+import type { ButtonProps } from "../types";
 
 const themeClasses = {
   "primary-dark": {
@@ -23,7 +17,7 @@ export const Button = ({
   variant = "primary",
   theme = "primary-dark",
   fullWidth = false,
-}: Props) => {
+}: ButtonProps) => {
   const base = "py-3 px-6 rounded-md font-medium transition-colors";
 
   return (

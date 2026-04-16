@@ -1,9 +1,9 @@
-type Props = {
-  children: React.ReactNode;
-  variant?: "primary" | "secondary";
-};
+import type { CaixaDeTextoProps } from "../types";
 
-export const CaixaDeTexto = ({ children, variant = "primary" }: Props) => {
+export const CaixaDeTexto = ({
+  children,
+  variant = "primary",
+}: CaixaDeTextoProps) => {
   const variants = {
     primary:
       "bg-primary-dark text-xl text-neutral-cream placeholder:text-neutral-cream/60",

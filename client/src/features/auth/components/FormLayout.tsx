@@ -1,9 +1,6 @@
-type Props = {
-  children: React.ReactNode;
-  onSubmit?: (e: React.FormEvent) => void;
-};
+import type { FormLayoutProps } from "../types";
 
-export const FormLayout = ({ children, onSubmit }: Props) => {
+export const FormLayout = ({ children, onSubmit }: FormLayoutProps) => {
   return (
     <form onSubmit={onSubmit} className="w-full flex flex-col gap-4">
       {children}
