@@ -1,0 +1,31 @@
+using Microsoft.AspNetCore.Mvc;
+using SkillSwap.Application.Usuarios.DTOs;
+using SkillSwap.Application.Usuarios.Services;
+using SkillSwap.Core.Usuarios.Exceptions;
+
+namespace SkillSwap.API.Controllers;
+
+[ApiController]
+[Route("api/v1/usuario")]
+public class UsuarioController(IUsuarioService usuarioService) : ControllerBase
+{
+    [HttpPost]
+    public async Task<IActionResult> CriarUsuario([FromBody] CriarUsuarioRequestDTO dto)
+    {
+        var resultado = await usuarioService.CriarUsuarioAsync(dto);
+
+        return resultado.Sucesso
+            ? CreatedAtAction(nameof(ObterUsuarioPorId), new { id = resultado.Value!.Id }, resultado.Value)
+            : Conflict(resultado.Erro);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> ObterUsuarioPorId(Guid id)
+    {
+        var resultado = await usuarioService.ObterUsuarioPorIdAsync(id);
+
+        return resultado.Sucesso
+            ? Ok(resultado.Value)
+            : NotFound(resultado.Erro);
+    }
+}
