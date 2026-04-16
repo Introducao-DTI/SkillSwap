@@ -1,11 +1,12 @@
-import CriarContaPage from "./features/auth/pages/CriarContaPage";
-import BemVindoPage from "./features/auth/pages/BemVindoPage";
-import ProtegerContaPage from "./features/auth/pages/ProtegerContaPage";
-import CompleteDadosPage from "./features/auth/pages/CompleteDadosPage";
-import GerarConvitePage from "./features/auth/pages/GerarConvitePage";
+import { Route, Routes } from "react-router-dom";
+import { AuthRoutes } from "./features/auth/routes/AuthRoutes";
 
-function App() {
-  return <CompleteDadosPage roleUsuario="usuario" />;
-}
+const App = () => {
+  return (
+    <Routes>
+      <Route path="/*" element={<AuthRoutes />} />
+    </Routes>
+  );
+};
 
 export default App;
