@@ -10,7 +10,7 @@ export const AuthRoutes = () => {
     <Routes>
       <Route path="/bem-vindo" element={<BemVindoPage />} />
       <Route path="/criar-conta" element={<CriarContaPage />} />
-      <Route path="/complete-dados" element={<CompleteDadosPage />} />
+      <Route path="/completar-dados" element={<CompleteDadosPage />} />
       <Route path="/proteger-conta" element={<ProtegerContaPage />} />
       <Route path="/gerar-convite" element={<GerarConvitePage />} />
     </Routes>

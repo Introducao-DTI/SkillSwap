@@ -5,15 +5,21 @@ import { CorpoPrincipal } from "../components/CorpoPrincipal";
 import { Header } from "../components/Header";
 import { RodapeAcesso } from "../components/RodapeAcesso";
 import { TituloHeader } from "../components/TituloHeader";
-import type { BemVindoPageProps } from "../types";
+import { useAppSelector } from "../../../store/hooks";
+import { useNavigate } from "react-router-dom";
 
-const BemVindoPage = ({ nomeUsuario, roleUsuario }: BemVindoPageProps) => {
+const BemVindoPage = () => {
+  const { roleUsuario, nomeUsuario } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  const handleAcessar = () => {
+    navigate("/criar-conta");
+  };
+
   return (
     <PageLayout>
       <Header>
-        <TituloHeader>
-          <div className="w-full">Olá {nomeUsuario}!</div>
-        </TituloHeader>
+        <TituloHeader>Olá {nomeUsuario}!</TituloHeader>
         <CaixaDeTexto>
           Bem vindo a plataforma SkillSwap um novo jeito de aprender com quem
           sabe!
@@ -21,7 +27,7 @@ const BemVindoPage = ({ nomeUsuario, roleUsuario }: BemVindoPageProps) => {
       </Header>
 
       <CorpoPrincipal>
-        {roleUsuario === "admin" ? (
+        {roleUsuario === "Admin" ? (
           <p className="text-support">
             Para realizar o seu primeiro acesso como administrador clique no
             botão acessar abaixo e finalize o seu cadastro.
@@ -32,7 +38,12 @@ const BemVindoPage = ({ nomeUsuario, roleUsuario }: BemVindoPageProps) => {
             botão acessar abaixo e siga o passo a passo para criar sua conta.
           </p>
         )}
-        <Button theme="primary-dark" variant="secondary" fullWidth>
+        <Button
+          theme="primary-dark"
+          variant="secondary"
+          fullWidth
+          onClick={handleAcessar}
+        >
           Acessar
         </Button>
       </CorpoPrincipal>

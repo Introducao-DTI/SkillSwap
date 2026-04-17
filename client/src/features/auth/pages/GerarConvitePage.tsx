@@ -9,8 +9,33 @@ import { FormRow } from "../components/FormRow";
 import { Header } from "../components/Header";
 import { RodapeAcesso } from "../components/RodapeAcesso";
 import { TituloHeader } from "../components/TituloHeader";
+import { useNavigate } from "react-router-dom";
+import {
+  gerarConviteSchema,
+  type GerarConviteFormData,
+} from "../schemas/gerarConviteSchema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const GerarConvitePage = () => {
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<GerarConviteFormData>({
+    resolver: zodResolver(gerarConviteSchema),
+  });
+
+  const onSubmit = (data: GerarConviteFormData) => {
+    console.log("Dados do formulário:", data);
+  };
+
+  const handleIrParaDashboard = () => {
+    navigate("/dashboard");
+  };
+
   return (
     <PageLayout>
       <Header>
@@ -27,25 +52,38 @@ const GerarConvitePage = () => {
           dias e pode ser utilizado apenas uma vez.
         </p>
 
-        <FormLayout>
+        <FormLayout onSubmit={handleSubmit(onSubmit)}>
           <FormRow cols={1}>
             <Select
               placeholder="Papel do Usuário"
               options={[
-                { value: "admin", label: "Convidar Administrador" },
-                { value: "usuario", label: "Convidar Membro" },
+                { value: "Admin", label: "Convidar Administrador" },
+                { value: "Usuario", label: "Convidar Membro" },
               ]}
+              fullWidth
+              {...register("roleUsuario")}
+              error={errors.roleUsuario?.message}
             />
             <Input
               placeholder="Email do Convidado"
               type="email"
               variant="secondary"
               fullWidth
+              {...register("email")}
+              error={errors.email?.message}
             />
-            <Button variant="primary" theme="accent-red" fullWidth>
+            <Button
+              variant="primary"
+              theme="accent-red"
+              fullWidth
+              type="submit"
+            >
               Enviar Link de Convite
             </Button>
           </FormRow>
+          <Button variant="secondary" fullWidth onClick={handleIrParaDashboard}>
+            Ir Para Dashboard
+          </Button>
         </FormLayout>
       </CorpoPrincipal>
 

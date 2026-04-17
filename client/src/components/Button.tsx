@@ -17,12 +17,14 @@ export const Button = ({
   variant = "primary",
   theme = "primary-dark",
   fullWidth = false,
+  type = "button",
 }: ButtonProps) => {
   const base = "py-3 px-6 rounded-md font-medium transition-colors";
 
   return (
     <button
       onClick={onClick}
+      type={type}
       className={`${base} ${themeClasses[theme][variant]} ${fullWidth ? "w-full" : ""}`}
     >
       {children}

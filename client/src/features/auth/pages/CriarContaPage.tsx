@@ -8,9 +8,36 @@ import { FormRow } from "../components/FormRow";
 import { Header } from "../components/Header";
 import { RodapeAcesso } from "../components/RodapeAcesso";
 import { TituloHeader } from "../components/TituloHeader";
-import type { CriarContaPageProps } from "../types";
+import { useAppSelector } from "../../../store/hooks";
+import { useNavigate } from "react-router-dom";
+import {
+  criarContaSchema,
+  type CriarContaFormData,
+} from "../schemas/criarContaSchema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-const CriarContaPage = ({ emailConvite }: CriarContaPageProps) => {
+const CriarContaPage = () => {
+  const { emailConvite } = useAppSelector((state) => state.auth);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CriarContaFormData>({
+    resolver: zodResolver(criarContaSchema),
+    defaultValues: {
+      email: emailConvite ?? "",
+    },
+  });
+
+  const navigate = useNavigate();
+
+  const onSubmit = (data: CriarContaFormData) => {
+    console.log("Dados do formulário:", data);
+    navigate("/completar-dados");
+  };
+
   return (
     <PageLayout>
       <Header>
@@ -32,23 +59,46 @@ const CriarContaPage = ({ emailConvite }: CriarContaPageProps) => {
           </>
         )}
 
-        <FormLayout>
+        <FormLayout onSubmit={handleSubmit(onSubmit)}>
           <FormRow cols={1}>
-            {" "}
             <Input
               placeholder="Email"
-              value={emailConvite}
-              variant="disabled"
+              type="email"
+              variant={emailConvite ? "disabled" : "secondary"}
               fullWidth
+              {...register("email")}
+              error={errors.email?.message}
             />
-            <Input placeholder="Telefone" variant="secondary" fullWidth />
-            <Input placeholder="Senha" variant="secondary" fullWidth />
             <Input
-              placeholder="Confirme sua senha"
+              placeholder="Telefone"
+              type="tel"
               variant="secondary"
               fullWidth
+              {...register("telefone")}
+              error={errors.telefone?.message}
             />
-            <Button theme="accent-red" variant="primary" fullWidth>
+            <Input
+              placeholder="Senha"
+              type="password"
+              variant="secondary"
+              fullWidth
+              {...register("senha")}
+              error={errors.senha?.message}
+            />
+            <Input
+              placeholder="Confirme sua senha"
+              type="password"
+              variant="secondary"
+              fullWidth
+              {...register("confirmarSenha")}
+              error={errors.confirmarSenha?.message}
+            />
+            <Button
+              theme="accent-red"
+              variant="primary"
+              fullWidth
+              type="submit"
+            >
               Criar Acesso
             </Button>
           </FormRow>

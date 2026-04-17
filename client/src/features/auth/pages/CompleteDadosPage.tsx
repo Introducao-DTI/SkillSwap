@@ -8,13 +8,60 @@ import { FormRow } from "../components/FormRow";
 import { Header } from "../components/Header";
 import { RodapeAcesso } from "../components/RodapeAcesso";
 import { TituloHeader } from "../components/TituloHeader";
-import type { CompleteDadosPageProps } from "../types";
+import { useAppSelector } from "../../../store/hooks";
+import { useNavigate } from "react-router-dom";
 
-const CompleteDadosPage = ({ roleUsuario }: CompleteDadosPageProps) => {
+import {
+  completeDadosAdminSchema,
+  type CompleteDadosAdminFormData,
+} from "../schemas/completeDadosAdminSchema";
+import {
+  completeEnderecoSchema,
+  type CompleteEnderecoFormData,
+} from "../schemas/completeEnderecoSchema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCep } from "../hooks/useCep";
+
+const CompleteDadosPage = () => {
+  const { roleUsuario } = useAppSelector((state) => state.auth);
+
+  const navigate = useNavigate();
+
+  const {
+    register: registerAdmin,
+    handleSubmit: handleSubmitAdmin,
+    formState: { errors: errorsAdmin },
+  } = useForm<CompleteDadosAdminFormData>({
+    resolver: zodResolver(completeDadosAdminSchema),
+  });
+
+  const {
+    register: registerUsuario,
+    handleSubmit: handleSubmitUsuario,
+    formState: { errors: errorsUsuario },
+    setValue,
+    control,
+  } = useForm<CompleteEnderecoFormData>({
+    resolver: zodResolver(completeEnderecoSchema),
+  });
+
+  const { buscandoCep, erroCep } = useCep({ control, setValue });
+
+  const onSubmitAdmin = (data: CompleteDadosAdminFormData) => {
+    console.log("Admin:", data);
+    navigate("/proteger-conta");
+  };
+
+  const onSubmitUsuario = (data: CompleteEnderecoFormData) => {
+    console.log("Usuário:", data);
+    navigate("/proteger-conta");
+  };
+
   return (
     <PageLayout>
       <Header>
-        {roleUsuario === "admin" ? (
+        {roleUsuario === "Admin" ? (
           <>
             <TituloHeader>Complete os dados da empresa</TituloHeader>
             <CaixaDeTexto variant="primary">
@@ -34,44 +81,126 @@ const CompleteDadosPage = ({ roleUsuario }: CompleteDadosPageProps) => {
       </Header>
 
       <CorpoPrincipal>
-        <FormLayout>
-          {roleUsuario === "admin" ? (
+        {roleUsuario === "Admin" ? (
+          <FormLayout onSubmit={handleSubmitAdmin(onSubmitAdmin)}>
             <FormRow cols={1}>
-              <Input placeholder="CNPJ" variant="secondary" fullWidth />
-              <Input placeholder="Razão Social" variant="secondary" fullWidth />
               <Input
+                type="text"
+                placeholder="CNPJ"
+                variant="secondary"
+                fullWidth
+                {...registerAdmin("cnpj")}
+                error={errorsAdmin.cnpj?.message}
+              />
+              <Input
+                type="text"
+                placeholder="Razão Social"
+                variant="secondary"
+                fullWidth
+                {...registerAdmin("razaoSocial")}
+                error={errorsAdmin.razaoSocial?.message}
+              />
+              <Input
+                type="text"
                 placeholder="Domínio Acesso (empresa.com)"
                 variant="secondary"
                 fullWidth
+                {...registerAdmin("dominioAcesso")}
+                error={errorsAdmin.dominioAcesso?.message}
               />
             </FormRow>
-          ) : (
-            <>
-              <FormRow cols={1}>
-                <Input placeholder="CEP" variant="secondary" fullWidth />
-                <Input placeholder="Rua" variant="secondary" fullWidth />
-              </FormRow>
+            <Button
+              theme="accent-red"
+              variant="primary"
+              fullWidth
+              type="submit"
+            >
+              Finalizar Cadastro
+            </Button>
+          </FormLayout>
+        ) : (
+          <FormLayout onSubmit={handleSubmitUsuario(onSubmitUsuario)}>
+            <FormRow cols={1}>
+              <Input
+                placeholder="CEP"
+                type="text"
+                variant="secondary"
+                fullWidth
+                {...registerUsuario("cep")}
+                error={errorsUsuario.cep?.message}
+              />
+              {buscandoCep && (
+                <p className="text-support text-sm">Buscando CEP...</p>
+              )}
+              {erroCep && <p className="text-accent-red text-sm">{erroCep}</p>}
+              <Input
+                placeholder="Rua"
+                type="text"
+                variant="secondary"
+                fullWidth
+                {...registerUsuario("logradouro")}
+                error={errorsUsuario.logradouro?.message}
+              />
+            </FormRow>
 
-              <FormRow cols={2}>
-                <Input placeholder="Número" variant="secondary" fullWidth />
-                <Input
-                  placeholder="Complemento"
-                  variant="secondary"
-                  fullWidth
-                />
-              </FormRow>
+            <FormRow cols={2}>
+              <Input
+                placeholder="Número"
+                type="text"
+                variant="secondary"
+                fullWidth
+                {...registerUsuario("numero")}
+                error={errorsUsuario.numero?.message}
+              />
+              <Input
+                placeholder="Complemento"
+                type="text"
+                variant="secondary"
+                fullWidth
+                {...registerUsuario("complemento")}
+                error={errorsUsuario.complemento?.message}
+              />
+            </FormRow>
 
-              <FormRow cols={2}>
-                <Input placeholder="Cidade" />
-                <Input placeholder="Estado" />
-              </FormRow>
-            </>
-          )}
-        </FormLayout>
+            <FormRow cols={1}>
+              <Input
+                placeholder="Bairro"
+                type="text"
+                variant="secondary"
+                fullWidth
+                {...registerUsuario("bairro")}
+                error={errorsUsuario.bairro?.message}
+              />
+            </FormRow>
 
-        <Button theme="accent-red" variant="primary" fullWidth>
-          Finalizar Cadastro
-        </Button>
+            <FormRow cols={2}>
+              <Input
+                placeholder="Cidade"
+                type="text"
+                variant="secondary"
+                fullWidth
+                {...registerUsuario("cidade")}
+                error={errorsUsuario.cidade?.message}
+              />
+              <Input
+                placeholder="Estado"
+                type="text"
+                variant="secondary"
+                fullWidth
+                {...registerUsuario("estado")}
+                error={errorsUsuario.estado?.message}
+              />
+            </FormRow>
+            <Button
+              theme="accent-red"
+              variant="primary"
+              fullWidth
+              type="submit"
+            >
+              Finalizar Cadastro
+            </Button>
+          </FormLayout>
+        )}
       </CorpoPrincipal>
 
       <RodapeAcesso />
