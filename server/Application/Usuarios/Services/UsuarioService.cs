@@ -38,4 +38,33 @@ ISenhaService senhaService) : IUsuarioService
 
         return Result<UsuarioDTO>.Ok(new UsuarioDTO(usuario.Id, usuario.Perfil!.Nome, usuario.Role));
     }
+
+    public async Task<Result<InformacoesDTO>> AtualizarInformacoesAsync(Guid id, InformacoesDTO dto)
+    {
+        var usuario = await usuarioRepository.ObterUsuarioPorIdAsync(id);
+
+        if (usuario is null)
+            return Result<InformacoesDTO>.Falha("Usuário não encontrado.");
+
+        var endereco = new Endereco(
+            dto.Rua, dto.Numero, dto.Bairro,
+            dto.Cidade, dto.Estado, dto.Cep
+        );
+
+        usuario.Perfil!.AtualizarTelefone(new Telefone(dto.Telefone));
+        usuario.Perfil!.DefinirEndereco(endereco);
+
+        await usuarioRepository.AtualizarInformacoesAsync(usuario);
+
+        return Result<InformacoesDTO>.Ok(new InformacoesDTO(
+            usuario.Email,
+            usuario.Perfil.Telefone.Numero,
+            usuario.Perfil.Endereco!.Rua,
+            usuario.Perfil.Endereco.Numero,
+            usuario.Perfil.Endereco.Bairro,
+            usuario.Perfil.Endereco.Cidade,
+            usuario.Perfil.Endereco.Estado,
+            usuario.Perfil.Endereco.Cep
+        ));
+    }
 }

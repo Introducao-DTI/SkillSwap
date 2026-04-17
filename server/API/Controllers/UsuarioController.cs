@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SkillSwap.Application.Usuarios.DTOs;
 using SkillSwap.Application.Usuarios.Services;
-using SkillSwap.Core.Usuarios.Exceptions;
 
 namespace SkillSwap.API.Controllers;
 
@@ -27,5 +26,15 @@ public class UsuarioController(IUsuarioService usuarioService) : ControllerBase
         return resultado.Sucesso
             ? Ok(resultado.Value)
             : NotFound(resultado.Erro);
+    }
+
+    [HttpPut("{id}/informacoes")]
+    public async Task<IActionResult> AtualizarInformacoes(Guid id, [FromBody] InformacoesDTO dto)
+    {
+        var resultado = await usuarioService.AtualizarInformacoesAsync(id, dto);
+
+        return resultado.Sucesso
+          ? Ok(resultado.Value)
+          : BadRequest(resultado.Erro);
     }
 }

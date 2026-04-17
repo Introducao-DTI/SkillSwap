@@ -7,4 +7,6 @@ public interface IUsuarioService
 {
     Task<Result<UsuarioDTO>> CriarUsuarioAsync(CriarUsuarioRequestDTO dto);
     Task<Result<UsuarioDTO>> ObterUsuarioPorIdAsync(Guid id);
+
+    Task<Result<InformacoesDTO>> AtualizarInformacoesAsync(Guid id, InformacoesDTO dto);
 }

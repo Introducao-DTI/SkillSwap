@@ -36,4 +36,18 @@ public class InformacoesUsuario
         ArgumentNullException.ThrowIfNull(empresa);
         Empresa = empresa;
     }
+
+    public void AtualizarNome(string nome)
+    {
+        if (string.IsNullOrWhiteSpace(nome))
+            throw new UsuarioInvalidoException("O nome é obrigatório.");
+
+        Nome = nome;
+    }
+
+    public void AtualizarTelefone(Telefone telefone)
+    {
+        ArgumentNullException.ThrowIfNull(telefone);
+        Telefone = telefone;
+    }
 }

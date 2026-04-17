@@ -1,7 +1,6 @@
 namespace SkillSwap.Application.Usuarios.DTOs;
 
 public record InformacoesDTO(
-    string Nome,
     string Email,
     string Telefone,
     string Rua,

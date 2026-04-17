@@ -1,5 +1,6 @@
 using SkillSwap.Application;
 using SkillSwap.Infrastructure;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,13 +10,29 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddInfrastructure();
 
 builder.Services.AddControllers()
-.AddJsonOptions(options =>
-    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+  .AddJsonOptions(options =>
+  {
+      options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(
+          JsonNamingPolicy.CamelCase
+      ));
+  });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Dev", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
+
+app.UseCors("Dev");
 
 if (app.Environment.IsDevelopment())
 {
@@ -37,6 +54,4 @@ app.UseExceptionHandler(appError =>
 });
 
 app.MapControllers();
-app.UseHttpsRedirection();
-
 app.Run();

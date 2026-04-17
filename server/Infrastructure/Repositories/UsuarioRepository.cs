@@ -24,4 +24,9 @@ public class UsuarioRepository(SkillSwapDbContext _context) : IUsuarioRepository
     {
         return await _context.Usuarios.AnyAsync(u => u.Email == email);
     }
+
+    public async Task AtualizarInformacoesAsync(Usuario usuario)
+    {
+        await _context.SaveChangesAsync();
+    }
 }
