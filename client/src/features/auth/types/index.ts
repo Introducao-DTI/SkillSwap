@@ -1,20 +1,3 @@
-// Auth Page Props Types
-
-export type RoleUsuario = "admin" | "usuario";
-
-export type BemVindoPageProps = {
-  nomeUsuario: string;
-  roleUsuario: RoleUsuario;
-};
-
-export type CompleteDadosPageProps = {
-  roleUsuario: RoleUsuario;
-};
-
-export type CriarContaPageProps = {
-  emailConvite?: string;
-};
-
 // Auth Components Types
 
 export type CaixaDeTextoProps = React.PropsWithChildren<{
