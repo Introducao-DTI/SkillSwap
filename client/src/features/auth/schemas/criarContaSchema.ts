@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const criarContaSchema = z
   .object({
+    nome: z.string().min(2, "O nome deve ter no mínimo 2 caracteres"),
     email: z.email("O email deve ser válido"),
     telefone: z
       .string()

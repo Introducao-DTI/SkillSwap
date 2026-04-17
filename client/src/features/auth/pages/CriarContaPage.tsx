@@ -8,7 +8,7 @@ import { FormRow } from "../components/FormRow";
 import { Header } from "../components/Header";
 import { RodapeAcesso } from "../components/RodapeAcesso";
 import { TituloHeader } from "../components/TituloHeader";
-import { useAppSelector } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { useNavigate } from "react-router-dom";
 import {
   criarContaSchema,
@@ -16,9 +16,16 @@ import {
 } from "../schemas/criarContaSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { usuarioApi } from "../api/usuarioApi";
+import {
+  setNomeUsuario,
+  setRoleUsuario,
+} from "../../../store/slices/authSlice";
+import { useState } from "react";
 
 const CriarContaPage = () => {
   const { emailConvite } = useAppSelector((state) => state.auth);
+  const [erroApi, setErroApi] = useState<string | null>(null);
 
   const {
     register,
@@ -33,9 +40,28 @@ const CriarContaPage = () => {
 
   const navigate = useNavigate();
 
-  const onSubmit = (data: CriarContaFormData) => {
-    console.log("Dados do formulário:", data);
-    navigate("/completar-dados");
+  const dispatch = useAppDispatch();
+
+  const onSubmit = async (data: CriarContaFormData) => {
+    try {
+      const usuario = await usuarioApi.criar({
+        nome: data.nome,
+        email: data.email,
+        telefone: data.telefone,
+        senha: data.senha,
+      });
+
+      dispatch(setNomeUsuario(usuario.nome));
+      dispatch(setRoleUsuario(usuario.role));
+
+      navigate("/completar-dados");
+    } catch (error) {
+      setErroApi(
+        error instanceof Error
+          ? error.message
+          : "Ocorreu um erro ao criar a conta",
+      );
+    }
   };
 
   return (
@@ -61,6 +87,15 @@ const CriarContaPage = () => {
 
         <FormLayout onSubmit={handleSubmit(onSubmit)}>
           <FormRow cols={1}>
+            <Input
+              placeholder="Nome"
+              type="text"
+              variant="secondary"
+              fullWidth
+              {...register("nome")}
+              error={errors.nome?.message}
+            />
+
             <Input
               placeholder="Email"
               type="email"
@@ -93,6 +128,7 @@ const CriarContaPage = () => {
               {...register("confirmarSenha")}
               error={errors.confirmarSenha?.message}
             />
+            {erroApi && <p className="text-accent-red text-sm">{erroApi}</p>}
             <Button
               theme="accent-red"
               variant="primary"

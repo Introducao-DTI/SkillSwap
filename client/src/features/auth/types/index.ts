@@ -17,3 +17,10 @@ export type FormRowProps = React.PropsWithChildren<{
 export type HeaderProps = React.PropsWithChildren;
 
 export type TituloHeaderProps = React.PropsWithChildren;
+
+// Auth API Types
+export type UsuarioDTO = {
+  id: string;
+  nome: string;
+  role: "Admin" | "Usuario";
+};

@@ -54,6 +54,14 @@ const GerarConvitePage = () => {
 
         <FormLayout onSubmit={handleSubmit(onSubmit)}>
           <FormRow cols={1}>
+            <Input
+              placeholder="Nome do Convidado"
+              type="text"
+              variant="secondary"
+              fullWidth
+              {...register("nome")}
+              error={errors.nome?.message}
+            />
             <Select
               placeholder="Papel do Usuário"
               options={[

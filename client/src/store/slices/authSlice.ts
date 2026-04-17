@@ -6,12 +6,14 @@ type AuthState = {
   roleUsuario: RoleUsuario;
   emailConvite: string | null;
   nomeUsuario: string | null;
+  nomeConvite: string | null;
 };
 
 const initialState: AuthState = {
   roleUsuario: null,
   emailConvite: null,
   nomeUsuario: null,
+  nomeConvite: null,
 };
 
 const authSlice = createSlice({
@@ -27,11 +29,19 @@ const authSlice = createSlice({
     setNomeUsuario(state, action: PayloadAction<string | null>) {
       state.nomeUsuario = action.payload;
     },
+    setNomeConvite(state, action: PayloadAction<string | null>) {
+      state.nomeConvite = action.payload;
+    },
     resetAuth: () => initialState,
   },
 });
 
-export const { setRoleUsuario, setEmailConvite, setNomeUsuario, resetAuth } =
-  authSlice.actions;
+export const {
+  setRoleUsuario,
+  setEmailConvite,
+  setNomeUsuario,
+  setNomeConvite,
+  resetAuth,
+} = authSlice.actions;
 
 export default authSlice.reducer;
