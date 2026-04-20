@@ -41,4 +41,18 @@ export const usuarioApi = {
     );
     return response.data;
   },
+
+  enviarCodigoVerificacao: async (
+    id: string,
+    metodo: string,
+  ): Promise<void> => {
+    await api.post(`/api/v1/usuario/${id}/verificacao/enviar`, { metodo });
+  },
+
+  validarCodigoVerificacao: async (
+    id: string,
+    codigo: string,
+  ): Promise<void> => {
+    await api.post(`/api/v1/usuario/${id}/verificacao/validar`, { codigo });
+  },
 };

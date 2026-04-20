@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SkillSwap.Infrastructure.Data;
 
@@ -10,9 +11,11 @@ using SkillSwap.Infrastructure.Data;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(SkillSwapDbContext))]
-    partial class SkillSwapDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260420171849_AdicionarCodigoVerificacao")]
+    partial class AdicionarCodigoVerificacao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.6");
@@ -91,7 +94,7 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("UsuarioId");
 
-                            b1.ToTable("Informacoes", (string)null);
+                            b1.ToTable("Usuarios");
 
                             b1.WithOwner()
                                 .HasForeignKey("UsuarioId");
@@ -111,7 +114,7 @@ namespace Infrastructure.Migrations
 
                                     b2.HasKey("InformacoesUsuarioUsuarioId");
 
-                                    b2.ToTable("Informacoes");
+                                    b2.ToTable("Usuarios");
 
                                     b2.WithOwner()
                                         .HasForeignKey("InformacoesUsuarioUsuarioId");
@@ -127,7 +130,7 @@ namespace Infrastructure.Migrations
 
                                             b3.HasKey("DadosEmpresaInformacoesUsuarioUsuarioId");
 
-                                            b3.ToTable("Informacoes");
+                                            b3.ToTable("Usuarios");
 
                                             b3.WithOwner()
                                                 .HasForeignKey("DadosEmpresaInformacoesUsuarioUsuarioId");
@@ -171,7 +174,7 @@ namespace Infrastructure.Migrations
 
                                     b2.HasKey("InformacoesUsuarioUsuarioId");
 
-                                    b2.ToTable("Informacoes");
+                                    b2.ToTable("Usuarios");
 
                                     b2.WithOwner()
                                         .HasForeignKey("InformacoesUsuarioUsuarioId");
@@ -188,7 +191,7 @@ namespace Infrastructure.Migrations
 
                                     b2.HasKey("InformacoesUsuarioUsuarioId");
 
-                                    b2.ToTable("Informacoes");
+                                    b2.ToTable("Usuarios");
 
                                     b2.WithOwner()
                                         .HasForeignKey("InformacoesUsuarioUsuarioId");

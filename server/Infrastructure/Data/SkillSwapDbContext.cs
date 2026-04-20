@@ -10,7 +10,8 @@ public class SkillSwapDbContext : DbContext
     }
 
     public DbSet<Usuario> Usuarios { get; set; }
-    public DbSet<InformacoesUsuario> InformacoesUsuarios { get; set; }
+    public DbSet<CodigoVerificacao> CodigosVerificacao { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -24,15 +25,20 @@ public class SkillSwapDbContext : DbContext
 
             usuario.OwnsOne(u => u.Perfil, perfil =>
             {
+                perfil.ToTable("Informacoes");
+
                 perfil.OwnsOne(p => p.Telefone);
-
                 perfil.OwnsOne(p => p.Endereco);
-
                 perfil.OwnsOne(p => p.Empresa, empresa =>
                 {
                     empresa.OwnsOne(e => e.CNPJ);
                 });
             });
+        });
+
+        modelBuilder.Entity<CodigoVerificacao>(cv =>
+        {
+            cv.HasKey(c => c.Id);
         });
     }
 }

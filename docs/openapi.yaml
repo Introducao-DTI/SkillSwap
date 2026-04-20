@@ -138,6 +138,66 @@ paths:
         "404":
           $ref: "#/components/responses/NotFound"
 
+  /api/v1/usuario/{id}/verificacao/enviar:
+  post:
+    tags:
+      - Usuários (Colaborador)
+    summary: Envia o código de verificação de duas etapas
+    description: Gera um código de 6 dígitos e envia para o email ou SMS do usuário.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UsuarioId"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EnviarCodigoRequestDTO"
+    responses:
+      "200":
+        description: Código enviado com sucesso
+      "404":
+        $ref: "#/components/responses/NotFound"
+      "400":
+        description: Método de verificação inválido
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+
+  /api/v1/usuario/{id}/verificacao/validar:
+  post:
+    tags:
+      - Usuários (Colaborador)
+    summary: Valida o código de verificação informado
+    description: Verifica se o código é válido e não expirou.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UsuarioId"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ValidarCodigoRequestDTO"
+    responses:
+      "200":
+        description: Código validado com sucesso
+      "400":
+        description: Código inválido ou expirado
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+      "404":
+        $ref: "#/components/responses/NotFound"
+
   /api/v1/usuario:
     post:
       tags:
@@ -1246,6 +1306,27 @@ components:
         role:
           type: string
           enum: [admin, usuario]
+
+    EnviarCodigoRequestDTO:
+      type: object
+      required:
+        - metodo
+      properties:
+        metodo:
+          type: string
+          enum: [sms, email]
+          description: Canal de envio do código de verificação
+
+    ValidarCodigoRequestDTO:
+      type: object
+      required:
+        - codigo
+      properties:
+        codigo:
+          type: string
+          minLength: 6
+          maxLength: 6
+          description: Código de 6 dígitos recebido pelo usuário
 
     CongelarUsuarioRequestDTO:
       type: object

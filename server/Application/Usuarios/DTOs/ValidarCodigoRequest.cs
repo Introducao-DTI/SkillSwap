@@ -1,0 +1,1 @@
+public record ValidarCodigoRequestDTO(string Codigo);
