@@ -1,6 +1,15 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import DashboardAdm from './pages/dashboardAdm';
 
 function App() {
-  return <h4 className="text-accent-red">Olá Mundo! SkillSwap</h4>;
+  return(
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<DashboardAdm />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
