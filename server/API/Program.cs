@@ -15,6 +15,7 @@ builder.Services.AddInfrastructure();
 builder.Services.AddControllers()
   .AddJsonOptions(options =>
   {
+      options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
       options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(
           JsonNamingPolicy.CamelCase
       ));

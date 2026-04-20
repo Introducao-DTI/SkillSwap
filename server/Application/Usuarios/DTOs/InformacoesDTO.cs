@@ -5,6 +5,7 @@ public record InformacoesDTO(
     string Telefone,
     string Rua,
     string Numero,
+    string? Complemento,
     string Bairro,
     string Cidade,
     string Estado,

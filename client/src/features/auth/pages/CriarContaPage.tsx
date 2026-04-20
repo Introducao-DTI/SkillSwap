@@ -20,6 +20,9 @@ import { usuarioApi } from "../api/usuarioApi";
 import {
   setNomeUsuario,
   setRoleUsuario,
+  setUsuarioId,
+  setEmailUsuario,
+  setTelefoneUsuario,
 } from "../../../store/slices/authSlice";
 import { useState } from "react";
 
@@ -51,8 +54,11 @@ const CriarContaPage = () => {
         senha: data.senha,
       });
 
+      dispatch(setUsuarioId(usuario.id));
       dispatch(setNomeUsuario(usuario.nome));
       dispatch(setRoleUsuario(usuario.role));
+      dispatch(setEmailUsuario(data.email));
+      dispatch(setTelefoneUsuario(data.telefone));
 
       navigate("/completar-dados");
     } catch (error) {

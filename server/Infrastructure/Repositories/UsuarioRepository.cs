@@ -29,4 +29,5 @@ public class UsuarioRepository(SkillSwapDbContext _context) : IUsuarioRepository
     {
         await _context.SaveChangesAsync();
     }
+
 }

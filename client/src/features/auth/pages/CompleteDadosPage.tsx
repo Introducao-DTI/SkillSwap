@@ -22,9 +22,14 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCep } from "../hooks/useCep";
+import { usuarioApi } from "../api/usuarioApi";
+import { useState } from "react";
 
 const CompleteDadosPage = () => {
-  const { roleUsuario } = useAppSelector((state) => state.auth);
+  const { roleUsuario, idUsuario, emailUsuario, telefoneUsuario } =
+    useAppSelector((state) => state.auth);
+
+  const [erroApi, setErroApi] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -53,9 +58,28 @@ const CompleteDadosPage = () => {
     navigate("/proteger-conta");
   };
 
-  const onSubmitUsuario = (data: CompleteEnderecoFormData) => {
-    console.log("Usuário:", data);
-    navigate("/proteger-conta");
+  const onSubmitUsuario = async (data: CompleteEnderecoFormData) => {
+    try {
+      await usuarioApi.atualizarInformacoes(idUsuario!, {
+        email: emailUsuario!,
+        telefone: telefoneUsuario!,
+        rua: data.logradouro,
+        numero: data.numero,
+        complemento: data.complemento,
+        bairro: data.bairro,
+        cidade: data.cidade,
+        estado: data.estado,
+        cep: data.cep,
+      });
+
+      navigate("/proteger-conta");
+    } catch (error) {
+      setErroApi(
+        error instanceof Error
+          ? error.message
+          : "Ocorreu um erro ao atualizar as informações",
+      );
+    }
   };
 
   return (
@@ -191,6 +215,7 @@ const CompleteDadosPage = () => {
                 error={errorsUsuario.estado?.message}
               />
             </FormRow>
+            {erroApi && <p className="text-accent-red text-sm">{erroApi}</p>}
             <Button
               theme="accent-red"
               variant="primary"

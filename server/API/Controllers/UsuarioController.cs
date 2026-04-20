@@ -37,4 +37,14 @@ public class UsuarioController(IUsuarioService usuarioService) : ControllerBase
           ? Ok(resultado.Value)
           : BadRequest(resultado.Erro);
     }
+
+    [HttpGet("{id}/informacoes")]
+    public async Task<IActionResult> ObterInformacoes(Guid id)
+    {
+        var resultado = await usuarioService.ObterInformacoesAsync(id);
+
+        return resultado.Sucesso
+            ? Ok(resultado.Value)
+            : NotFound(resultado.Erro);
+    }
 }
