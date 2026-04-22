@@ -19,6 +19,8 @@ tags:
     description: Rastreabilidade total das ações críticas e governança do sistema.
   - name: Onboarding (Setup)
     description: Fluxo inicial de criação da empresa e do primeiro administrador após a venda do produto.
+  - name: Convites
+    description: Geração e validação de links de convite para novos usuários.
 
 servers:
   - url: http://localhost:5000
@@ -27,6 +29,65 @@ servers:
     description: Servidor de Produção
 
 paths:
+  /api/v1/convite/gerar:
+    post:
+      tags:
+        - Convites
+      summary: Gera um link de convite para novo usuário
+      description: Cria um token único com validade de 2 dias para convidar um novo usuário.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GerarConviteRequestDTO"
+      responses:
+        "201":
+          description: Convite gerado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConviteDTO"
+        "400":
+          description: Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /api/v1/convite/validar:
+    get:
+      tags:
+        - Convites
+      summary: Valida um token de convite
+      description: Verifica se o token é válido, não foi utilizado e não expirou. Retorna os dados do convite.
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Token recebido no link de convite
+      responses:
+        "200":
+          description: Token válido
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConviteDTO"
+        "400":
+          description: Token inválido ou expirado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Token não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
   /api/v1/onboarding/setup:
     post:
       tags:
@@ -139,64 +200,64 @@ paths:
           $ref: "#/components/responses/NotFound"
 
   /api/v1/usuario/{id}/verificacao/enviar:
-  post:
-    tags:
-      - Usuários (Colaborador)
-    summary: Envia o código de verificação de duas etapas
-    description: Gera um código de 6 dígitos e envia para o email ou SMS do usuário.
-    parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          $ref: "#/components/schemas/UsuarioId"
-    requestBody:
-      required: true
-      content:
-        application/json:
+    post:
+      tags:
+        - Usuários (Colaborador)
+      summary: Envia o código de verificação de duas etapas
+      description: Gera um código de 6 dígitos e envia para o email ou SMS do usuário.
+      parameters:
+        - name: id
+          in: path
+          required: true
           schema:
-            $ref: "#/components/schemas/EnviarCodigoRequestDTO"
-    responses:
-      "200":
-        description: Código enviado com sucesso
-      "404":
-        $ref: "#/components/responses/NotFound"
-      "400":
-        description: Método de verificação inválido
+            $ref: "#/components/schemas/UsuarioId"
+      requestBody:
+        required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Error"
+              $ref: "#/components/schemas/EnviarCodigoRequestDTO"
+      responses:
+        "200":
+          description: Código enviado com sucesso
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "400":
+          description: Método de verificação inválido
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
   /api/v1/usuario/{id}/verificacao/validar:
-  post:
-    tags:
-      - Usuários (Colaborador)
-    summary: Valida o código de verificação informado
-    description: Verifica se o código é válido e não expirou.
-    parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          $ref: "#/components/schemas/UsuarioId"
-    requestBody:
-      required: true
-      content:
-        application/json:
+    post:
+      tags:
+        - Usuários (Colaborador)
+      summary: Valida o código de verificação informado
+      description: Verifica se o código é válido e não expirou.
+      parameters:
+        - name: id
+          in: path
+          required: true
           schema:
-            $ref: "#/components/schemas/ValidarCodigoRequestDTO"
-    responses:
-      "200":
-        description: Código validado com sucesso
-      "400":
-        description: Código inválido ou expirado
+            $ref: "#/components/schemas/UsuarioId"
+      requestBody:
+        required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Error"
-      "404":
-        $ref: "#/components/responses/NotFound"
+              $ref: "#/components/schemas/ValidarCodigoRequestDTO"
+      responses:
+        "200":
+          description: Código validado com sucesso
+        "400":
+          description: Código inválido ou expirado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
   /api/v1/usuario:
     post:
@@ -1231,6 +1292,50 @@ paths:
 
 components:
   schemas:
+    GerarConviteRequestDTO:
+    type: object
+    required:
+      - email
+      - nome
+      - role
+    properties:
+      email:
+        type: string
+        format: email
+        description: Email do usuário convidado
+      nome:
+        type: string
+        description: Nome do usuário convidado
+      role:
+        type: string
+        enum: [Admin, Usuario]
+        description: Papel do usuário na plataforma
+
+    ConviteDTO:
+      type: object
+      required:
+        - token
+        - email
+        - nome
+        - role
+        - expiracao
+      properties:
+        token:
+          type: string
+          description: Token único do convite
+        email:
+          type: string
+          format: email
+        nome:
+          type: string
+        role:
+          type: string
+          enum: [Admin, Usuario]
+        expiracao:
+          type: string
+          format: date-time
+          description: Data e hora de expiração do convite
+
     SetupEmpresaRequestDTO:
       type: object
       required: [token_convite, dados_empresa, dados_admin]
@@ -1314,7 +1419,7 @@ components:
       properties:
         metodo:
           type: string
-          enum: [sms, email]
+          enum: [email]
           description: Canal de envio do código de verificação
 
     ValidarCodigoRequestDTO:

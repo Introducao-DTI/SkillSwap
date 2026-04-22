@@ -15,9 +15,11 @@ public static class DependencyInjection
     {
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         services.AddScoped<IVerificacaoRepository, VerificacaoRepository>();
+        services.AddScoped<IConviteRepository, ConviteRepository>();
 
         services.AddScoped<ISenhaService, SenhaService>();
         services.AddScoped<IEmailService, SmtpEmailService>();
+
 
         services.AddDbContext<SkillSwapDbContext>(options =>
             options.UseSqlite("Data Source=skillswap.db"));
