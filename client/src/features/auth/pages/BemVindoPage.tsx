@@ -9,7 +9,7 @@ import { useAppSelector } from "../../../store/hooks";
 import { useNavigate } from "react-router-dom";
 
 const BemVindoPage = () => {
-  const { roleUsuario, nomeUsuario } = useAppSelector((state) => state.auth);
+  const { roleUsuario, nomeConvite } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
 
   const handleAcessar = () => {
@@ -19,7 +19,7 @@ const BemVindoPage = () => {
   return (
     <PageLayout>
       <Header>
-        <TituloHeader>Olá {nomeUsuario}!</TituloHeader>
+        <TituloHeader>Olá {nomeConvite}!</TituloHeader>
         <CaixaDeTexto>
           Bem vindo a plataforma SkillSwap um novo jeito de aprender com quem
           sabe!
