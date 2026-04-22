@@ -48,4 +48,15 @@ public class ConviteRepository(SkillSwapDbContext context) : IConviteRepository
     convite.Utilizar();
     await context.SaveChangesAsync();
   }
+
+  public async Task AvancarEtapaAsync(Guid usuarioId, string novaEtapa)
+  {
+    var convite = await context.ConviteTokens
+        .FirstOrDefaultAsync(c => c.UsuarioId == usuarioId && !c.Utilizado);
+
+    if (convite is null) return;
+
+    convite.AvancarEtapa(novaEtapa);
+    await context.SaveChangesAsync();
+  }
 }

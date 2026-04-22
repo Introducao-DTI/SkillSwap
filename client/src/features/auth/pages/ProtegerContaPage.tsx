@@ -18,7 +18,7 @@ import {
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useAppSelector } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import {
   validarCodigoSchema,
   type ValidarCodigoFormData,
@@ -26,6 +26,7 @@ import {
 import { usuarioApi } from "../api/usuarioApi";
 import { useState } from "react";
 import { conviteApi } from "../api/conviteApi";
+import { setEtapaCadastro } from "../../../store/slices/authSlice";
 
 const ProtegerContaPage = () => {
   const navigate = useNavigate();
@@ -34,6 +35,8 @@ const ProtegerContaPage = () => {
   );
   const [erroApi, setErroApi] = useState<string | null>(null);
   const [codigoEnviado, setCodigoEnviado] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   const {
     register: registerEnvio,
@@ -76,6 +79,8 @@ const ProtegerContaPage = () => {
       if (tokenConvite) {
         await conviteApi.consumirToken(tokenConvite);
       }
+
+      dispatch(setEtapaCadastro("concluido"));
 
       if (roleUsuario === "Admin") {
         navigate("/gerar-convite");

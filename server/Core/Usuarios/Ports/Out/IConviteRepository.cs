@@ -7,4 +7,5 @@ public interface IConviteRepository
   Task AtualizarAsync(ConviteToken convite);
   Task InvalidarTokenPorEmailAsync(string email);
   Task ConsumirTokenAsync(string token);
+  Task AvancarEtapaAsync(Guid usuarioId, string novaEtapa);
 }

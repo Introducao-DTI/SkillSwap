@@ -63,6 +63,8 @@ ISenhaService senhaService, IConviteRepository conviteRepository) : IUsuarioServ
 
         await usuarioRepository.AtualizarInformacoesAsync(usuario);
 
+        await conviteRepository.AvancarEtapaAsync(id, "proteger-conta");
+
         return Result<InformacoesDTO>.Ok(new InformacoesDTO(
             usuario.Email,
             usuario.Perfil.Telefone.Numero,

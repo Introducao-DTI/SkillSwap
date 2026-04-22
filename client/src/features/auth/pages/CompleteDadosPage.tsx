@@ -8,7 +8,7 @@ import { FormRow } from "../components/FormRow";
 import { Header } from "../components/Header";
 import { RodapeAcesso } from "../components/RodapeAcesso";
 import { TituloHeader } from "../components/TituloHeader";
-import { useAppSelector } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -24,10 +24,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useCep } from "../hooks/useCep";
 import { usuarioApi } from "../api/usuarioApi";
 import { useState } from "react";
+import { setEtapaCadastro } from "../../../store/slices/authSlice";
 
 const CompleteDadosPage = () => {
   const { roleUsuario, idUsuario, emailUsuario, telefoneUsuario } =
     useAppSelector((state) => state.auth);
+
+  const dispatch = useAppDispatch();
 
   const [erroApi, setErroApi] = useState<string | null>(null);
 
@@ -55,6 +58,7 @@ const CompleteDadosPage = () => {
 
   const onSubmitAdmin = (data: CompleteDadosAdminFormData) => {
     console.log("Admin:", data);
+    dispatch(setEtapaCadastro("proteger-conta"));
     navigate("/proteger-conta");
   };
 
@@ -72,6 +76,7 @@ const CompleteDadosPage = () => {
         cep: data.cep,
       });
 
+      dispatch(setEtapaCadastro("proteger-conta"));
       navigate("/proteger-conta");
     } catch (error) {
       setErroApi(
