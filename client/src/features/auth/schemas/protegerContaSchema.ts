@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 export const protegerContaSchema = z.object({
-  metodoVerificacao: z.enum(["sms", "email"], {
-    message: "O tipo de verificação deve ser 'sms' ou 'email'",
+  metodoVerificacao: z.enum(["email"], {
+    message: "O tipo de verificação deve ser 'email'",
   }),
 });
 

@@ -10,7 +10,7 @@ import { Select } from "../../../components/Select";
 import { FormLayout } from "../components/FormLayout";
 import { FormRow } from "../components/FormRow";
 
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 import {
   protegerContaSchema,
@@ -28,7 +28,7 @@ import { usuarioApi } from "../api/usuarioApi";
 import { useState } from "react";
 
 const ProtegerContaPage = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { idUsuario, roleUsuario } = useAppSelector((state) => state.auth);
   const [erroApi, setErroApi] = useState<string | null>(null);
   const [codigoEnviado, setCodigoEnviado] = useState(false);
@@ -72,9 +72,11 @@ const ProtegerContaPage = () => {
       );
 
       if (roleUsuario === "Admin") {
-        navigate("/gerar-convite");
+        alert("Código validado com sucesso! Sua conta está protegida.");
+        // navigate("/gerar-convite");
       } else {
-        navigate("/dashboard");
+        alert("Código validado com sucesso! Sua conta está protegida.");
+        // navigate("/dashboard");
       }
     } catch (error) {
       setErroApi(
@@ -102,10 +104,7 @@ const ProtegerContaPage = () => {
               placeholder="Selecione a verificação"
               variant="secondary"
               fullWidth
-              options={[
-                { value: "sms", label: "Mensagem de Texto" },
-                { value: "email", label: "Email" },
-              ]}
+              options={[{ value: "email", label: "Email" }]}
               {...registerEnvio("metodoVerificacao")}
               error={errorsEnvio.metodoVerificacao?.message}
             />
