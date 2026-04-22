@@ -36,4 +36,16 @@ public class ConviteRepository(SkillSwapDbContext context) : IConviteRepository
 
     await context.SaveChangesAsync();
   }
+
+  public async Task ConsumirTokenAsync(string token)
+  {
+    var convite = await context.ConviteTokens
+      .FirstOrDefaultAsync(c => c.Token == token);
+
+    if (convite is null)
+      return;
+
+    convite.Utilizar();
+    await context.SaveChangesAsync();
+  }
 }

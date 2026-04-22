@@ -27,7 +27,7 @@ import {
 import { useState } from "react";
 
 const CriarContaPage = () => {
-  const { emailConvite } = useAppSelector((state) => state.auth);
+  const { emailConvite, nomeConvite } = useAppSelector((state) => state.auth);
   const [erroApi, setErroApi] = useState<string | null>(null);
 
   const {
@@ -37,6 +37,7 @@ const CriarContaPage = () => {
   } = useForm<CriarContaFormData>({
     resolver: zodResolver(criarContaSchema),
     defaultValues: {
+      nome: nomeConvite ?? "",
       email: emailConvite ?? "",
     },
   });
@@ -96,7 +97,7 @@ const CriarContaPage = () => {
             <Input
               placeholder="Nome"
               type="text"
-              variant="secondary"
+              variant={nomeConvite ? "disabled" : "secondary"}
               fullWidth
               {...register("nome")}
               error={errors.nome?.message}

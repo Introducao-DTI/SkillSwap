@@ -7,7 +7,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       primary:
         "bg-primary-dark text-neutral-cream placeholder:text-neutral-cream/60",
       secondary:
-        "bg-transparent border border-primary-dark text-primary-dark placeholder:text-primary-dark/60",
+        "bg-transparent border border-primary-dark text-primary-dark placeholder:text-primary-dark/60 hover:border-accent-red focus:border-accent-red",
       disabled:
         "bg-gray-200 text-gray-500 placeholder:text-gray-500/60 cursor-not-allowed",
     };

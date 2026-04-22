@@ -28,4 +28,14 @@ public class ConviteController(IConviteService conviteService) : ControllerBase
             ? NotFound(resultado.Erro)
             : BadRequest(resultado.Erro);
   }
+
+  [HttpPost("consumir")]
+  public async Task<IActionResult> ConsumirToken([FromBody] ConsumirTokenRequestDTO dto)
+  {
+    var resultado = await conviteService.ConsumirTokenAsync(dto.Token);
+
+    return resultado.Sucesso
+        ? Ok()
+        : BadRequest(resultado.Erro);
+  }
 }

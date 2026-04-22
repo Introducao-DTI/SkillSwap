@@ -46,4 +46,20 @@ public class ConviteService(IConviteRepository conviteRepository) : IConviteServ
         convite.Expiracao
     ));
   }
+
+  public async Task<Result> ConsumirTokenAsync(string token)
+  {
+    var convite = await conviteRepository.ObterPorTokenAsync(token);
+
+    if (convite is null)
+      return Result.Falha("Token não encontrado.");
+
+    if (!convite.EstaValido())
+      return Result.Falha("Token já utilizado ou expirado.");
+
+    convite.Utilizar();
+    await conviteRepository.AtualizarAsync(convite);
+
+    return Result.Ok();
+  }
 }

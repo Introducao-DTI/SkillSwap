@@ -6,4 +6,5 @@ public interface IConviteRepository
   Task<ConviteToken?> ObterPorTokenAsync(string token);
   Task AtualizarAsync(ConviteToken convite);
   Task InvalidarTokenPorEmailAsync(string email);
+  Task ConsumirTokenAsync(string token);
 }

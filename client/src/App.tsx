@@ -6,6 +6,7 @@ import {
   setEmailConvite,
   setNomeConvite,
   setRoleUsuario,
+  setTokenConvite,
 } from "./store/slices/authSlice";
 import { conviteApi } from "./features/auth/api/conviteApi";
 
@@ -25,6 +26,7 @@ const App = () => {
         dispatch(setEmailConvite(convite.email));
         dispatch(setNomeConvite(convite.nome));
         dispatch(setRoleUsuario(convite.role));
+        dispatch(setTokenConvite(convite.token));
         navigate("/bem-vindo");
       })
       .catch(() => navigate("/token-invalido"));

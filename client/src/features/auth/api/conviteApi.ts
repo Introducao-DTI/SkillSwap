@@ -15,4 +15,8 @@ export const conviteApi = {
     );
     return response.data;
   },
+
+  consumirToken: async (token: string): Promise<void> => {
+    await api.post("/api/v1/convite/consumir", { token });
+  },
 };

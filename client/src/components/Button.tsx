@@ -25,7 +25,7 @@ export const Button = ({
     <button
       onClick={onClick}
       type={type}
-      className={`${base} ${themeClasses[theme][variant]} ${fullWidth ? "w-full" : ""}`}
+      className={`${base} ${themeClasses[theme][variant]} ${fullWidth ? "w-full" : ""} cursor-pointer`}
     >
       {children}
     </button>

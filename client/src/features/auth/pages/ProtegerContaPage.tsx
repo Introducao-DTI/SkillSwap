@@ -9,8 +9,7 @@ import { TituloHeader } from "../components/TituloHeader";
 import { Select } from "../../../components/Select";
 import { FormLayout } from "../components/FormLayout";
 import { FormRow } from "../components/FormRow";
-
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import {
   protegerContaSchema,
@@ -26,10 +25,13 @@ import {
 } from "../schemas/validarCodigoSchema";
 import { usuarioApi } from "../api/usuarioApi";
 import { useState } from "react";
+import { conviteApi } from "../api/conviteApi";
 
 const ProtegerContaPage = () => {
-  // const navigate = useNavigate();
-  const { idUsuario, roleUsuario } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const { idUsuario, roleUsuario, tokenConvite } = useAppSelector(
+    (state) => state.auth,
+  );
   const [erroApi, setErroApi] = useState<string | null>(null);
   const [codigoEnviado, setCodigoEnviado] = useState(false);
 
@@ -71,12 +73,14 @@ const ProtegerContaPage = () => {
         data.codigoVerificacao,
       );
 
+      if (tokenConvite) {
+        await conviteApi.consumirToken(tokenConvite);
+      }
+
       if (roleUsuario === "Admin") {
-        alert("Código validado com sucesso! Sua conta está protegida.");
-        // navigate("/gerar-convite");
+        navigate("/gerar-convite");
       } else {
-        alert("Código validado com sucesso! Sua conta está protegida.");
-        // navigate("/dashboard");
+        navigate("/dashboard");
       }
     } catch (error) {
       setErroApi(
