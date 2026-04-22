@@ -11,6 +11,8 @@ public class ConviteService(IConviteRepository conviteRepository) : IConviteServ
 {
   public async Task<Result<ConviteDTO>> GerarConviteAsync(GerarConviteRequestDTO dto)
   {
+    await conviteRepository.InvalidarTokenPorEmailAsync(dto.Email);
+
     var role = dto.Role == "Admin" ? RoleEnum.Admin : RoleEnum.Usuario;
 
     var convite = new ConviteToken(dto.Email, dto.Nome, role);
