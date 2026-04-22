@@ -24,7 +24,9 @@ public class ConviteService(IConviteRepository conviteRepository) : IConviteServ
         convite.Email,
         convite.Nome,
         convite.Role.ToString(),
-        convite.Expiracao
+        convite.Expiracao,
+        convite.UsuarioId,
+        convite.Etapa
     ));
   }
 
@@ -43,7 +45,9 @@ public class ConviteService(IConviteRepository conviteRepository) : IConviteServ
         convite.Email,
         convite.Nome,
         convite.Role.ToString(),
-        convite.Expiracao
+        convite.Expiracao,
+        convite.UsuarioId,
+        convite.Etapa
     ));
   }
 

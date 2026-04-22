@@ -11,6 +11,8 @@ public class ConviteToken
   public RoleEnum Role { get; private set; }
   public DateTime Expiracao { get; private set; }
   public bool Utilizado { get; private set; }
+  public Guid? UsuarioId { get; private set; }
+  public string Etapa { get; private set; } = "bem-vindo";
 
   public ConviteToken(string email, string nome, RoleEnum role)
   {
@@ -21,6 +23,17 @@ public class ConviteToken
     Role = role;
     Expiracao = DateTime.UtcNow.AddDays(2);
     Utilizado = false;
+  }
+
+  public void VincularUsuario(Guid usuarioId)
+  {
+    UsuarioId = usuarioId;
+    Etapa = "completar-dados";
+  }
+
+  public void AvancarEtapa(string novaEtapa)
+  {
+    Etapa = novaEtapa;
   }
 
   public bool EstaValido() =>

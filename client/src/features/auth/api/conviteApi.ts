@@ -6,6 +6,8 @@ export type ConviteDTO = {
   nome: string;
   role: "Admin" | "Usuario";
   expiracao: string;
+  usuarioId?: string;
+  etapa: string;
 };
 
 export const conviteApi = {

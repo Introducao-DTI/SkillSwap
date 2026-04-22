@@ -23,11 +23,14 @@ import {
   setUsuarioId,
   setEmailUsuario,
   setTelefoneUsuario,
+  setEtapaCadastro,
 } from "../../../store/slices/authSlice";
 import { useState } from "react";
 
 const CriarContaPage = () => {
-  const { emailConvite, nomeConvite } = useAppSelector((state) => state.auth);
+  const { emailConvite, nomeConvite, tokenConvite } = useAppSelector(
+    (state) => state.auth,
+  );
   const [erroApi, setErroApi] = useState<string | null>(null);
 
   const {
@@ -53,6 +56,7 @@ const CriarContaPage = () => {
         email: data.email,
         telefone: data.telefone,
         senha: data.senha,
+        tokenConvite: tokenConvite!,
       });
 
       dispatch(setUsuarioId(usuario.id));
@@ -60,6 +64,7 @@ const CriarContaPage = () => {
       dispatch(setRoleUsuario(usuario.role));
       dispatch(setEmailUsuario(data.email));
       dispatch(setTelefoneUsuario(data.telefone));
+      dispatch(setEtapaCadastro("completar-dados"));
 
       navigate("/completar-dados");
     } catch (error) {

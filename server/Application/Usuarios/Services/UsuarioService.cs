@@ -9,7 +9,7 @@ namespace SkillSwap.Application.Usuarios.Services;
 
 public class UsuarioService(
 IUsuarioRepository usuarioRepository,
-ISenhaService senhaService) : IUsuarioService
+ISenhaService senhaService, IConviteRepository conviteRepository) : IUsuarioService
 {
     public async Task<Result<UsuarioDTO>> CriarUsuarioAsync(CriarUsuarioRequestDTO dto)
     {
@@ -25,6 +25,14 @@ ISenhaService senhaService) : IUsuarioService
         usuario.DefinirPerfil(perfil);
 
         await usuarioRepository.CriarUsuarioAsync(usuario, perfil);
+
+        var convite = await conviteRepository.ObterPorTokenAsync(dto.TokenConvite);
+
+        if (convite is not null)
+        {
+            convite.VincularUsuario(usuario.Id);
+            await conviteRepository.AtualizarAsync(convite);
+        }
 
         return Result<UsuarioDTO>.Ok(new UsuarioDTO(usuario.Id, usuario.Nome, usuario.Role));
     }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SkillSwap.Application.Usuarios.Services;
+using SkillSwap.Application.Usuarios.DTOs;
 
 namespace SkillSwap.API.Controllers;
 

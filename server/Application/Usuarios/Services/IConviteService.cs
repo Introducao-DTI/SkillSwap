@@ -1,4 +1,5 @@
 using SkillSwap.Core.Shared;
+using SkillSwap.Application.Usuarios.DTOs;
 
 namespace SkillSwap.Application.Usuarios.Services;
 

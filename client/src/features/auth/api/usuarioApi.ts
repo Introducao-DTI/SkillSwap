@@ -6,6 +6,7 @@ export type CriarUsuarioRequest = {
   email: string;
   telefone: string;
   senha: string;
+  tokenConvite: string;
 };
 
 export type AtualizarInformacoesRequest = {
