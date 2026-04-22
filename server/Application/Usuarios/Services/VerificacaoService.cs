@@ -1,5 +1,6 @@
 using SkillSwap.Application.Usuarios.Services;
 using SkillSwap.Core.Shared;
+using SkillSwap.Core.Usuarios.Enums;
 using SkillSwap.Core.Usuarios.Models;
 using SkillSwap.Core.Usuarios.Ports.Out;
 
@@ -42,6 +43,17 @@ IEmailService emailService) : IVerificacaoService
     codigoVerificacao.Utilizar();
 
     await verificacaoRepository.AtualizarAsync(codigoVerificacao);
+
+    var usuario = await usuarioRepository.ObterUsuarioPorIdAsync(usuarioId);
+
+    var metodo = codigoVerificacao.Metodo.ToLower() switch
+    {
+      "sms" => MetodoVerificacaoEnum.Sms,
+      _ => MetodoVerificacaoEnum.Email // ← qualquer outro valor → email
+    };
+
+    usuario!.Perfil!.DefinirVerificacao(metodo);
+    await usuarioRepository.AtualizarInformacoesAsync(usuario);
 
     return Result.Ok();
   }

@@ -27,6 +27,8 @@ public class SkillSwapDbContext : DbContext
             {
                 perfil.ToTable("Informacoes");
 
+                perfil.Property(p => p.MetodoVerificacaoEnum).HasConversion<string>();
+
                 perfil.OwnsOne(p => p.Telefone);
                 perfil.OwnsOne(p => p.Endereco);
                 perfil.OwnsOne(p => p.Empresa, empresa =>

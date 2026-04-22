@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SkillSwap.Infrastructure.Data;
 
@@ -10,9 +11,11 @@ using SkillSwap.Infrastructure.Data;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(SkillSwapDbContext))]
-    partial class SkillSwapDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260422120851_AdicionarVerificacaoConta")]
+    partial class AdicionarVerificacaoConta
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.6");
@@ -92,8 +95,7 @@ namespace Infrastructure.Migrations
                             b1.Property<Guid>("Id")
                                 .HasColumnType("TEXT");
 
-                            b1.Property<string>("MetodoVerificacaoEnum")
-                                .IsRequired()
+                            b1.Property<string>("MetodoVerificacao")
                                 .HasColumnType("TEXT");
 
                             b1.Property<DateTime?>("VerificadoEm")
