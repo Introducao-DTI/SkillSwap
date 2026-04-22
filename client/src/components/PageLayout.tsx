@@ -9,7 +9,7 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
     bg-neutral-cream
     p-8
     lg:p-16
-    gap-6
+    gap-2
   "
     >
       {children}
