@@ -2,13 +2,7 @@ import type { CorpoPrincipalProps } from "../types";
 
 export const CorpoPrincipal = ({ children }: CorpoPrincipalProps) => {
   return (
-    <div
-      className="
-      w-full
-      max-w-10/12
-      flex flex-col items-center gap-4
-  "
-    >
+    <div className="w-full flex flex-col items-center gap-2 sm:gap-4">
       {children}
     </div>
   );

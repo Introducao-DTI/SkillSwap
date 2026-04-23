@@ -18,7 +18,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           {...rest}
           disabled={variant === "disabled"}
-          className={`h-10 rounded-md px-4 outline-none w-full ${variants[variant]}`}
+          className={`h-9 sm:h-10 rounded-md px-4 outline-none w-full ${variants[variant]}`}
         />
         {error && <p className="text-accent-red text-sm">{error}</p>}
       </div>

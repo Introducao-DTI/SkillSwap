@@ -5,14 +5,13 @@ export const CaixaDeTexto = ({
   variant = "primary",
 }: CaixaDeTextoProps) => {
   const variants = {
-    primary:
-      "bg-primary-dark text-xl text-neutral-cream placeholder:text-neutral-cream/60",
+    primary: "bg-primary-dark text-base text-neutral-cream",
     secondary:
-      "bg-transparent text-sm border border-primary-dark text-primary-dark placeholder:text-primary-dark/60",
+      "bg-transparent text-sm border border-primary-dark text-primary-dark",
   };
 
   return (
-    <div className={`${variants[variant]} p-4 rounded-md w-full`}>
+    <div className={`${variants[variant]} p-2 sm:p-4 rounded-md w-full`}>
       {children}
     </div>
   );

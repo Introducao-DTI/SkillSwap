@@ -6,9 +6,13 @@ type Props = {
 };
 
 export const RotaProtegida = ({ children }: Props) => {
-  const { tokenConvite } = useAppSelector((state) => state.auth);
+  const { tokenConvite, etapaCadastro } = useAppSelector((state) => state.auth);
 
   if (!tokenConvite) {
+    return <Navigate to="/token-invalido" replace />;
+  }
+
+  if (etapaCadastro === "concluido") {
     return <Navigate to="/token-invalido" replace />;
   }
 

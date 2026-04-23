@@ -50,11 +50,12 @@ const CompleteDadosPage = () => {
     formState: { errors: errorsUsuario },
     setValue,
     control,
+    clearErrors,
   } = useForm<CompleteEnderecoFormData>({
     resolver: zodResolver(completeEnderecoSchema),
   });
 
-  const { buscandoCep, erroCep } = useCep({ control, setValue });
+  const { buscandoCep, erroCep } = useCep({ control, setValue, clearErrors });
 
   const onSubmitAdmin = (data: CompleteDadosAdminFormData) => {
     console.log("Admin:", data);

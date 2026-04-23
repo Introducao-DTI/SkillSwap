@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
-import { useWatch, type UseFormSetValue, type Control } from "react-hook-form";
+import {
+  useWatch,
+  type UseFormSetValue,
+  type Control,
+  type UseFormClearErrors,
+} from "react-hook-form";
 import { buscarCep } from "../api/cepApi";
 import type { CompleteEnderecoFormData } from "../schemas/completeEnderecoSchema";
 
 type UseCepProps = {
   control: Control<CompleteEnderecoFormData>;
   setValue: UseFormSetValue<CompleteEnderecoFormData>;
+  clearErrors: UseFormClearErrors<CompleteEnderecoFormData>;
 };
 
 type UseCepReturn = {
@@ -13,7 +19,11 @@ type UseCepReturn = {
   erroCep: string | null;
 };
 
-export const useCep = ({ control, setValue }: UseCepProps): UseCepReturn => {
+export const useCep = ({
+  control,
+  setValue,
+  clearErrors,
+}: UseCepProps): UseCepReturn => {
   const [buscandoCep, setBuscandoCep] = useState(false);
   const [erroCep, setErroCep] = useState<string | null>(null);
 
@@ -35,6 +45,8 @@ export const useCep = ({ control, setValue }: UseCepProps): UseCepReturn => {
           setValue("bairro", data.bairro);
           setValue("cidade", data.localidade);
           setValue("estado", data.uf);
+
+          clearErrors(["logradouro", "bairro", "cidade", "estado"]);
         }
       } catch (e) {
         if (!controller.signal.aborted) {
