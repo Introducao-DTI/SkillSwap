@@ -9,6 +9,7 @@ import {
   setTokenConvite,
   setUsuarioId,
   setEtapaCadastro,
+  resetAuth,
 } from "./store/slices/authSlice";
 import { conviteApi } from "./features/auth/api/conviteApi";
 
@@ -22,19 +23,31 @@ const App = () => {
   useEffect(() => {
     const token = searchParams.get("token");
 
+    console.log("=== APP USEEFFECT ===");
+    console.log("token na URL:", token);
+    console.log("tokenConvite no Redux:", tokenConvite);
+    console.log("etapaCadastro no Redux:", etapaCadastro);
+
     if (token) {
+      console.log("token === tokenConvite?", token === tokenConvite);
       if (
         token === tokenConvite &&
         etapaCadastro &&
         etapaCadastro !== "concluido"
       ) {
+        console.log("→ retomando etapa:", etapaCadastro);
         navigate(`/${etapaCadastro}`);
         return;
       }
 
+      console.log("→ chamando validarToken na API...");
+
       conviteApi
         .validarToken(token)
         .then((convite) => {
+          console.log("✅ token válido:", convite);
+          dispatch(resetAuth());
+
           dispatch(setEmailConvite(convite.email));
           dispatch(setNomeConvite(convite.nome));
           dispatch(setRoleUsuario(convite.role));
@@ -49,11 +62,19 @@ const App = () => {
             navigate("/bem-vindo");
           }
         })
-        .catch(() => navigate("/token-invalido"));
+        .catch((error) => {
+          console.log("❌ validarToken falhou:", error);
+          console.log("status:", error?.response?.status);
+          console.log("data:", error?.response?.data);
+          navigate("/token-invalido");
+        });
       return;
     }
 
+    console.log("→ sem token na URL");
+
     if (tokenConvite && etapaCadastro && etapaCadastro !== "concluido") {
+      console.log("→ retomando etapa:", etapaCadastro);
       navigate(`/${etapaCadastro}`);
     }
   }, []);

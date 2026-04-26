@@ -6,11 +6,13 @@ import ProtegerContaPage from "../pages/ProtegerContaPage";
 import GerarConvitePage from "../pages/GerarConvitePage";
 import TokenInvalidoPage from "../pages/TokenInvalidoPage";
 import { RotaProtegida } from "../components/RotaProtegida";
+import LoginPage from "../pages/LoginPage";
 
 export const AuthRoutes = () => {
   return (
     <Routes>
       <Route path="/token-invalido" element={<TokenInvalidoPage />} />
+      <Route path="/login" element={<LoginPage />} />
       <Route
         path="/bem-vindo"
         element={

@@ -34,7 +34,7 @@ public class ConviteController(IConviteService conviteService) : ControllerBase
   }
 
   [HttpPost("consumir")]
-  [AllowAnonymous]
+  [Authorize]
   public async Task<IActionResult> ConsumirToken([FromBody] ConsumirTokenRequestDTO dto)
   {
     var resultado = await conviteService.ConsumirTokenAsync(dto.Token);

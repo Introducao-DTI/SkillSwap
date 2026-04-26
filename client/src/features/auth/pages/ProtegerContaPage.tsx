@@ -30,9 +30,7 @@ import { setEtapaCadastro } from "../../../store/slices/authSlice";
 
 const ProtegerContaPage = () => {
   const navigate = useNavigate();
-  const { idUsuario, roleUsuario, tokenConvite } = useAppSelector(
-    (state) => state.auth,
-  );
+  const { idUsuario, tokenConvite } = useAppSelector((state) => state.auth);
   const [erroApi, setErroApi] = useState<string | null>(null);
   const [codigoEnviado, setCodigoEnviado] = useState(false);
 
@@ -71,23 +69,30 @@ const ProtegerContaPage = () => {
 
   const onSubmitCodigo = async (data: ValidarCodigoFormData) => {
     try {
+      console.log("1. iniciando validação do código");
       await usuarioApi.validarCodigoVerificacao(
         idUsuario!,
         data.codigoVerificacao,
       );
+      console.log("2. código validado com sucesso");
 
       if (tokenConvite) {
+        console.log("3. consumindo token:", tokenConvite);
         await conviteApi.consumirToken(tokenConvite);
+        console.log("4. token consumido");
+      } else {
+        console.log("3. tokenConvite é null/undefined — consumir pulado");
       }
 
+      console.log("5. navegando para login");
+      navigate("/login");
+
+      console.log("6. dispatch etapaCadastro concluido");
       dispatch(setEtapaCadastro("concluido"));
 
-      if (roleUsuario === "Admin") {
-        navigate("/gerar-convite");
-      } else {
-        navigate("/dashboard");
-      }
+      console.log("7. fim do onSubmitCodigo");
     } catch (error) {
+      console.log("ERRO no onSubmitCodigo:", error);
       setErroApi(
         error instanceof Error ? error.message : "Código inválido ou expirado.",
       );
