@@ -1,34 +1,36 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "../../../components/Button";
-import { PageLayout } from "../../../components/PageLayout";
 import { useAppSelector } from "../../../store/hooks";
+import { PageLayout } from "../../../components/PageLayout";
+import { Header } from "../components/Header";
+import { TituloHeader } from "../components/TituloHeader";
 import { CaixaDeTexto } from "../components/CaixaDeTexto";
 import { CorpoPrincipal } from "../components/CorpoPrincipal";
-import { Header } from "../components/Header";
+import { Button } from "../../../components/Button/Button";
 import { RodapeAcesso } from "../components/RodapeAcesso";
-import { TituloHeader } from "../components/TituloHeader";
 
 const TokenInvalidoPage = () => {
   const navigate = useNavigate();
-  const { etapaCadastro } = useAppSelector((state) => state.auth);
+  const { etapaCadastro, tokenConvite } = useAppSelector((state) => state.auth);
+
+  const mensagem = () => {
+    if (etapaCadastro === "concluido") {
+      return "O processo de cadastro já foi concluído para este token. Por favor, tente acessar com suas credenciais.";
+    }
+    if (tokenConvite) {
+      return "O token de convite é inválido ou expirou. Por favor, solicite ao administrador um novo convite para continuar.";
+    }
+    return "É necessário um token de convite para acessar esta página.";
+  };
 
   return (
     <PageLayout>
       <Header>
         <TituloHeader>Token Inválido</TituloHeader>
-        {etapaCadastro === "concluido" ? (
-          <CaixaDeTexto>
-            O processo de cadastro já foi concluído para este token. Por favor,
-            tente acessar com suas credenciais.
-          </CaixaDeTexto>
-        ) : (
-          <CaixaDeTexto>
-            O token fornecido é inválido ou expirou. Por favor, tente novamente.
-          </CaixaDeTexto>
-        )}
+        <CaixaDeTexto>{mensagem()}</CaixaDeTexto>
       </Header>
+
       <CorpoPrincipal>
-        {etapaCadastro === "concluido" ? (
+        {etapaCadastro === "concluido" && (
           <Button
             theme="accent-red"
             variant="primary"
@@ -36,16 +38,9 @@ const TokenInvalidoPage = () => {
           >
             Voltar para Acesso
           </Button>
-        ) : (
-          <Button
-            theme="accent-red"
-            variant="primary"
-            onClick={() => navigate("/solicitar-convite")}
-          >
-            Solicitar Novo Convite
-          </Button>
         )}
       </CorpoPrincipal>
+
       <RodapeAcesso />
     </PageLayout>
   );
