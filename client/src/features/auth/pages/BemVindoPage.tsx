@@ -1,4 +1,4 @@
-import { Button } from "../../../components/Button";
+import { Button } from "../../../components/Button/Button";
 import { CaixaDeTexto } from "../components/CaixaDeTexto";
 import { PageLayout } from "../../../components/PageLayout";
 import { CorpoPrincipal } from "../components/CorpoPrincipal";
