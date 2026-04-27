@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import DashboardAdm from './pages/dashboardAdm';
+import { DashboardAdm } from './pages/dashboardAdm';
 
 function App() {
   return(

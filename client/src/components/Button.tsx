@@ -4,6 +4,7 @@ type Props = {
   variant?: "primary" | "secondary";
   fullWidth?: boolean;
   theme?: "primary-dark" | "accent-red";
+  className?: string;
 };
 
 const themeClasses = {
@@ -23,13 +24,14 @@ export const Button = ({
   variant = "primary",
   theme = "primary-dark",
   fullWidth = false,
+  className,
 }: Props) => {
-  const base = "py-3 px-6 rounded-md font-medium transition-colors";
+  const base = "py-3 px-4 rounded-md font-medium transition-colors";
 
   return (
     <button
       onClick={onClick}
-      className={`${base} ${themeClasses[theme][variant]} ${fullWidth ? "w-full" : ""}`}
+      className={`${base} ${themeClasses[theme][variant]} ${className} ${fullWidth ? "w-full" : ""}`}
     >
       {children}
     </button>
