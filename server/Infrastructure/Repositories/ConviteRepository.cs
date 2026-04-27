@@ -27,15 +27,16 @@ public class ConviteRepository(SkillSwapDbContext context) : IConviteRepository
 
   public async Task InvalidarTokenPorEmailAsync(string email)
   {
-    var tokensAtivos = await context.ConviteTokens
-      .Where(c => c.Email == email && !c.Utilizado)
-      .ToListAsync();
+    var tokens = await context.ConviteTokens
+        .Where(c => c.Email == email && !c.Utilizado)
+        .ToListAsync();
 
-    foreach (var token in tokensAtivos)
-      token.Utilizar();
+    foreach (var token in tokens)
+      token.Invalidar();
 
     await context.SaveChangesAsync();
   }
+
 
   public async Task ConsumirTokenAsync(string token)
   {

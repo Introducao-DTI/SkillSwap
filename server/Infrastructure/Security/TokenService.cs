@@ -18,15 +18,16 @@ public class TokenService(IConfiguration configuration) : ITokenService
     var expiracao = int.Parse(configuration["Jwt:ExpiracaoMinutos"]!);
 
     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
-    var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+    var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
     var claims = new[]
     {
-        new Claim(JwtRegisteredClaimNames.Sub, usuarioId.ToString()),
-        new Claim(JwtRegisteredClaimNames.Email, email),
-        new Claim("role", role),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+      new Claim(JwtRegisteredClaimNames.Sub,   usuarioId.ToString()),
+      new Claim(JwtRegisteredClaimNames.Email, email),
+      new Claim(ClaimTypes.Role,               role),
+      new Claim(JwtRegisteredClaimNames.Jti,   Guid.NewGuid().ToString())
     };
+
 
     var token = new JwtSecurityToken(
         issuer: issuer,

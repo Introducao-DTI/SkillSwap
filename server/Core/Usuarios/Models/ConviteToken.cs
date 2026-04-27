@@ -46,6 +46,11 @@ public class ConviteToken
     Utilizado = true;
   }
 
+  public void Invalidar()
+  {
+    Utilizado = true;
+  }
+
   protected ConviteToken()
   {
     Token = null!;
