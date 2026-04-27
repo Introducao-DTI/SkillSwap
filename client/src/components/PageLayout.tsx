@@ -5,7 +5,7 @@ import {
 } from "lucide-react";
 import { Menu } from "./Menu";
 import SkillSwap from "../assets/SkillSwap.png";
-import { Button } from "./Button";
+import { Button } from "./Button/Button";
 
 type Props = {
   children: React.ReactNode;

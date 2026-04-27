@@ -8,11 +8,12 @@ export const Button = ({
   theme = "primary-dark",
   fullWidth = false,
   type = "button",
+  className,
 }: ButtonProps) => (
   <button
     type={type}
     onClick={onClick}
-    className={buttonVariants({ variant, theme, fullWidth })}
+    className={buttonVariants({ variant, theme, fullWidth, className })}
   >
     {children}
   </button>

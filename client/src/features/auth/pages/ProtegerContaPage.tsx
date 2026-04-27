@@ -1,6 +1,6 @@
-import { Button } from "../../../components/Button";
+import { Button } from "../../../components/Button/Button";
 import { CaixaDeTexto } from "../components/CaixaDeTexto";
-import { Input } from "../../../components/Input";
+import { Input } from "../../../components/Input/Input";
 import { PageLayout } from "../../../components/PageLayout";
 import { CorpoPrincipal } from "../components/CorpoPrincipal";
 import { Header } from "../components/Header";

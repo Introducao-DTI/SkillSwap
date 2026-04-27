@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 
 import SkillSwap from "../assets/SkillSwap.png";
-import { Button } from "./Button";
+import { Button } from "./Button/Button";
 
 type Props = {
   isOpen: boolean;

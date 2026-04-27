@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 type Props = {
   value: number;
-  duration: number;
+  duration?: number;
 }
 
 export const AnimatedNumber = ({ value, duration = 700 } : Props) => {
