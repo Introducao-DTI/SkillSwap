@@ -6,6 +6,7 @@ namespace SkillSwap.Core.Usuarios.Models;
 public class Usuario
 {
     public Guid Id { get; private set; }
+    public string Nome { get; private set; }
     public string Email { get; private set; }
     public RoleEnum Role { get; private set; }
     public string SenhaHash { get; private set; }
@@ -13,14 +14,18 @@ public class Usuario
     public StatusUsuarioEnum Status { get; private set; }
     public InformacoesUsuario? Perfil { get; private set; }
 
-    public Usuario(string email, RoleEnum role, string senhaHash)
+    public Usuario(string nome, string email, RoleEnum role, string senhaHash)
     {
+        if (string.IsNullOrWhiteSpace(nome))
+            throw new UsuarioInvalidoException("O nome é obrigatório.");
+
         ValidarEmail(email);
 
         if (string.IsNullOrWhiteSpace(senhaHash))
             throw new UsuarioInvalidoException("A senha é obrigatória.");
 
         Id = Guid.NewGuid();
+        Nome = nome;
         Email = email;
         Role = role;
         SenhaHash = senhaHash;
@@ -81,6 +86,7 @@ public class Usuario
 
     protected Usuario()
     {
+        Nome = null!;
         Email = null!;
         SenhaHash = null!;
     }

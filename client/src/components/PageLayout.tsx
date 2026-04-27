@@ -1,20 +1,11 @@
-type Props = {
-  children: React.ReactNode;
-};
+import type { PageLayoutProps } from "../types";
 
-export const PageLayout = ({ children }: Props) => {
+export const PageLayout = ({ children }: PageLayoutProps) => {
   return (
-    <div
-      className="
-    min-h-screen w-full
-    flex flex-col items-center justify-evenly
-    bg-neutral-cream
-    p-8
-    lg:p-16
-    gap-6
-  "
-    >
-      {children}
+    <div className="h-dvh w-full flex items-center justify-center bg-neutral-cream">
+      <div className="w-full max-w-sm sm:max-w-md flex flex-col px-4 py-5 sm:px-8 sm:py-10 h-dvh justify-between sm:h-auto sm:justify-normal sm:gap-8">
+        {children}
+      </div>
     </div>
   );
 };

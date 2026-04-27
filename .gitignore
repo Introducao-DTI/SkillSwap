@@ -19,6 +19,11 @@ dist-ssr/
 .env.*
 !.env.example
 
+skillswap.db
+*.db
+*.db-shm
+*.db-wal
+
 # =========================
 # .NET / C# (Backend)
 # =========================

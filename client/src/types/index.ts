@@ -3,24 +3,21 @@ export type ButtonProps = React.PropsWithChildren<{
   variant?: "primary" | "secondary";
   fullWidth?: boolean;
   theme?: "primary-dark" | "accent-red";
+  type?: "button" | "submit" | "reset";
 }>;
 
-export type InputProps = {
-  placeholder?: string;
-  type?: "text" | "email" | "password" | "tel";
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   variant?: "primary" | "secondary" | "disabled";
   fullWidth?: boolean;
+  error?: string;
 };
 
 export type PageLayoutProps = React.PropsWithChildren;
 
-export type SelectProps = {
+export type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
   options: { value: string; label: string }[];
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   placeholder?: string;
   variant?: "primary" | "secondary" | "disabled";
   fullWidth?: boolean;
+  error?: string;
 };

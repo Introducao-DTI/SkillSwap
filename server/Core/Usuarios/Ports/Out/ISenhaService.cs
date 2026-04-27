@@ -1,4 +1,3 @@
-using SkillSwap.Core.Usuarios.Models;
 using SkillSwap.Core.Usuarios.Enums;
 
 namespace SkillSwap.Core.Usuarios.Ports.Out;
