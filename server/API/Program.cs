@@ -2,19 +2,22 @@ using SkillSwap.Application;
 using SkillSwap.Infrastructure;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using SkillSwap.Core.Usuarios.Ports.Out;
+using SkillSwap.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
-
+builder.Services.AddScoped<IEmailService, ConsoleEmailService>();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 
 builder.Services.AddControllers()
   .AddJsonOptions(options =>
   {
+      options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
       options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(
           JsonNamingPolicy.CamelCase
       ));

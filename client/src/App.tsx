@@ -1,15 +1,15 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from "react-router-dom";
+import { AuthRoutes } from "./features/auth/routes/AuthRoutes";
+import { useTokenConvite } from "./features/auth/hooks/useTokenConvite";
 
-import { DashboardAdm } from './pages/dashboardAdm';
+const App = () => {
+  useTokenConvite();
 
-function App() {
-  return(
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<DashboardAdm />} />
-      </Routes>
-    </BrowserRouter>
+  return (
+    <Routes>
+      <Route path="/*" element={<AuthRoutes />} />
+    </Routes>
   );
-}
+};
 
 export default App;
