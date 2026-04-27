@@ -1,5 +1,7 @@
+import { Button } from "../../../components/Button/Button";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../store/hooks";
+<<<<<<< HEAD
 import { PageLayout } from "../../../components/PageLayout";
 import { Header } from "../components/Header";
 import { TituloHeader } from "../components/TituloHeader";
@@ -7,6 +9,14 @@ import { CaixaDeTexto } from "../components/CaixaDeTexto";
 import { CorpoPrincipal } from "../components/CorpoPrincipal";
 import { Button } from "../../../components/Button/Button";
 import { RodapeAcesso } from "../components/RodapeAcesso";
+=======
+import { CorpoPrincipal } from "../components/CorpoPrincipal";
+import { Header } from "../components/Header";
+import { PageLayout } from "../../../components/PageLayout";
+import { RodapeAcesso } from "../components/RodapeAcesso";
+import { TituloHeader } from "../components/TituloHeader";
+import { CaixaDeTexto } from "../components/CaixaDeTexto";
+>>>>>>> main
 
 const TokenInvalidoPage = () => {
   const navigate = useNavigate();
@@ -17,9 +27,15 @@ const TokenInvalidoPage = () => {
       return "O processo de cadastro já foi concluído para este token. Por favor, tente acessar com suas credenciais.";
     }
     if (tokenConvite) {
+<<<<<<< HEAD
       return "O token de convite é inválido ou expirou. Por favor, solicite ao administrador um novo convite para continuar.";
     }
     return "É necessário um token de convite para acessar esta página.";
+=======
+      return "O token de convite é inválido ou expirou. Por favor, solicite um novo convite para continuar.";
+    }
+    return "É necessário um token de convite para acessar esta página. Por favor, solicite um convite para iniciar o cadastro.";
+>>>>>>> main
   };
 
   return (

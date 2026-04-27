@@ -21,6 +21,11 @@ dist-ssr/
 
 skillswap.db
 *.db
+<<<<<<< HEAD
+=======
+*.db-shm
+*.db-wal
+>>>>>>> main
 
 # =========================
 # .NET / C# (Backend)
