@@ -10,7 +10,6 @@ public class InformacoesUsuario
     public Guid UsuarioId { get; private set; }
     public Telefone Telefone { get; private set; }
     public Endereco? Endereco { get; private set; }
-    public DadosEmpresa? Empresa { get; private set; }
     public MetodoVerificacaoEnum MetodoVerificacaoEnum { get; private set; }
     public bool ContaVerificada { get; private set; }
     public DateTime? VerificadoEm { get; private set; }
@@ -28,12 +27,6 @@ public class InformacoesUsuario
     {
         ArgumentNullException.ThrowIfNull(endereco);
         Endereco = endereco;
-    }
-
-    public void AssociarEmpresa(DadosEmpresa empresa)
-    {
-        ArgumentNullException.ThrowIfNull(empresa);
-        Empresa = empresa;
     }
     public void AtualizarTelefone(Telefone telefone)
     {

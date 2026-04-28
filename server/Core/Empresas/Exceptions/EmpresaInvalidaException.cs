@@ -1,4 +1,4 @@
-namespace SkillSwap.Core.Usuarios.Exceptions;
+namespace SkillSwap.Core.Empresas.Exceptions;
 
 public class EmpresaInvalidaException : Exception
 {

@@ -1,6 +1,6 @@
-using SkillSwap.Core.Usuarios.Exceptions;
+using SkillSwap.Core.Empresas.Exceptions;
 
-namespace SkillSwap.Core.Usuarios.ValueObjects;
+namespace SkillSwap.Core.Empresas.ValueObjects;
 
 public record Cnpj
 {

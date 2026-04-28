@@ -32,10 +32,6 @@ public class SkillSwapDbContext : DbContext
 
                 perfil.OwnsOne(p => p.Telefone);
                 perfil.OwnsOne(p => p.Endereco);
-                perfil.OwnsOne(p => p.Empresa, empresa =>
-                {
-                    empresa.OwnsOne(e => e.CNPJ);
-                });
             });
         });
 
