@@ -1,4 +1,4 @@
-import type { FormRowProps } from "../types";
+import type { FormRowProps } from "../../types/Auth";
 
 export const FormRow = ({ children, cols = 1 }: FormRowProps) => {
   const colsMap = {

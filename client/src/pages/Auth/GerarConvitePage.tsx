@@ -1,19 +1,19 @@
-import { Button } from "../../../components/Button/Button";
-import { Input } from "../../../components/Input/Input";
-import { PageLayout } from "../../../components/PageLayout";
-import { Select } from "../../../components/Select";
-import { CaixaDeTexto } from "../components/CaixaDeTexto";
-import { CorpoPrincipal } from "../components/CorpoPrincipal";
-import { FormLayout } from "../components/FormLayout";
-import { FormRow } from "../components/FormRow";
-import { Header } from "../components/Header";
-import { RodapeAcesso } from "../components/RodapeAcesso";
-import { TituloHeader } from "../components/TituloHeader";
+import { Button } from "../../components/Button/Button";
+import { Input } from "../../components/Input/Input";
+import { PageLayout } from "../../components/PageLayout";
+import { Select } from "../../components/Select";
+import { CaixaDeTexto } from "../../components/Auth/CaixaDeTexto";
+import { CorpoPrincipal } from "../../components/Auth/CorpoPrincipal";
+import { FormLayout } from "../../components/Auth/FormLayout";
+import { FormRow } from "../../components/Auth/FormRow";
+import { Header } from "../../components/Auth/Header";
+import { RodapeAcesso } from "../../components/Auth/RodapeAcesso";
+import { TituloHeader } from "../../components/Auth/TituloHeader";
 import { useNavigate } from "react-router-dom";
 import {
   gerarConviteSchema,
   type GerarConviteFormData,
-} from "../schemas/gerarConviteSchema";
+} from "../../schemas/Auth/gerarConviteSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 

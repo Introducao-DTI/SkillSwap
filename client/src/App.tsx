@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
-import { AuthRoutes } from "./features/auth/routes/AuthRoutes";
+import { AuthRoutes } from "./routes/Auth/AuthRoutes";
 import { DashboardRoutes } from "./routes/Dashboard/DashboardRoutes";
-import { useTokenConvite } from "./features/auth/hooks/useTokenConvite";
+import { useTokenConvite } from "./hooks/Auth/useTokenConvite";
 
 const App = () => {
   useTokenConvite();

@@ -20,8 +20,7 @@ import {
   Building2
 } from "lucide-react";
 
-import SkillSwap from "../assets/SkillSwap.png";
-import { Button } from "./Button/Button";
+import SkillSwap from "../assets/logo-skillswap-full-original.webp";
 
 type Props = {
   isOpen: boolean;

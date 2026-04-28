@@ -1,4 +1,4 @@
-import logoFull from "../../../assets/logo-skillswap-full-mono.webp";
+import logoFull from "../../assets/logo-skillswap-full-mono.webp";
 
 export const RodapeAcesso = () => {
   return (

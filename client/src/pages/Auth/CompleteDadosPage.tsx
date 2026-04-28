@@ -1,30 +1,30 @@
-import { Button } from "../../../components/Button/Button";
-import { Input } from "../../../components/Input/Input";
-import { PageLayout } from "../../../components/PageLayout";
-import { CaixaDeTexto } from "../components/CaixaDeTexto";
-import { CorpoPrincipal } from "../components/CorpoPrincipal";
-import { FormLayout } from "../components/FormLayout";
-import { FormRow } from "../components/FormRow";
-import { Header } from "../components/Header";
-import { RodapeAcesso } from "../components/RodapeAcesso";
-import { TituloHeader } from "../components/TituloHeader";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { Button } from "../../components/Button/Button";
+import { Input } from "../../components/Input/Input";
+import { PageLayout } from "../../components/PageLayout";
+import { CaixaDeTexto } from "../../components/Auth/CaixaDeTexto";
+import { CorpoPrincipal } from "../../components/Auth/CorpoPrincipal";
+import { FormLayout } from "../../components/Auth/FormLayout";
+import { FormRow } from "../../components/Auth/FormRow";
+import { Header } from "../../components/Auth/Header";
+import { RodapeAcesso } from "../../components/Auth/RodapeAcesso";
+import { TituloHeader } from "../../components/Auth/TituloHeader";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { useNavigate } from "react-router-dom";
 
 import {
   completeDadosAdminSchema,
   type CompleteDadosAdminFormData,
-} from "../schemas/completeDadosAdminSchema";
+} from "../../schemas/Auth/completeDadosAdminSchema";
 import {
   completeEnderecoSchema,
   type CompleteEnderecoFormData,
-} from "../schemas/completeEnderecoSchema";
+} from "../../schemas/Auth/completeEnderecoSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCep } from "../hooks/useCep";
-import { usuarioApi } from "../api/usuarioApi";
+import { useCep } from "../../hooks/Auth/useCep";
+import { usuarioApi } from "../../api/usuarioApi";
 import { useState } from "react";
-import { setEtapaCadastro } from "../../../store/slices/authSlice";
+import { setEtapaCadastro } from "../../store/slices/authSlice";
 
 const CompleteDadosPage = () => {
   const { roleUsuario, idUsuario, emailUsuario, telefoneUsuario } =

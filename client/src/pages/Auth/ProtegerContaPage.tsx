@@ -1,32 +1,32 @@
-import { Button } from "../../../components/Button/Button";
-import { CaixaDeTexto } from "../components/CaixaDeTexto";
-import { Input } from "../../../components/Input/Input";
-import { PageLayout } from "../../../components/PageLayout";
-import { CorpoPrincipal } from "../components/CorpoPrincipal";
-import { Header } from "../components/Header";
-import { RodapeAcesso } from "../components/RodapeAcesso";
-import { TituloHeader } from "../components/TituloHeader";
-import { Select } from "../../../components/Select";
-import { FormLayout } from "../components/FormLayout";
-import { FormRow } from "../components/FormRow";
+import { Button } from "../../components/Button/Button";
+import { CaixaDeTexto } from "../../components/Auth/CaixaDeTexto";
+import { Input } from "../../components/Input/Input";
+import { PageLayout } from "../../components/PageLayout";
+import { CorpoPrincipal } from "../../components/Auth/CorpoPrincipal";
+import { Header } from "../../components/Auth/Header";
+import { RodapeAcesso } from "../../components/Auth/RodapeAcesso";
+import { TituloHeader } from "../../components/Auth/TituloHeader";
+import { Select } from "../../components/Select";
+import { FormLayout } from "../../components/Auth/FormLayout";
+import { FormRow } from "../../components/Auth/FormRow";
 import { useNavigate } from "react-router-dom";
 
 import {
   protegerContaSchema,
   type ProtegerContaFormData,
-} from "../schemas/protegerContaSchema";
+} from "../../schemas/Auth/protegerContaSchema";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   validarCodigoSchema,
   type ValidarCodigoFormData,
-} from "../schemas/validarCodigoSchema";
-import { usuarioApi } from "../api/usuarioApi";
+} from "../../schemas/Auth/validarCodigoSchema";
+import { usuarioApi } from "../../api/usuarioApi";
 import { useState } from "react";
-import { conviteApi } from "../api/conviteApi";
-import { setEtapaCadastro } from "../../../store/slices/authSlice";
+import { conviteApi } from "../../api/conviteApi";
+import { setEtapaCadastro } from "../../store/slices/authSlice";
 
 const ProtegerContaPage = () => {
   const navigate = useNavigate();

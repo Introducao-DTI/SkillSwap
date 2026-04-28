@@ -1,12 +1,12 @@
-import { Button } from "../../../components/Button/Button";
+import { Button } from "../../components/Button/Button";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../../store/hooks";
-import { CorpoPrincipal } from "../components/CorpoPrincipal";
-import { Header } from "../components/Header";
-import { PageLayout } from "../../../components/PageLayout";
-import { RodapeAcesso } from "../components/RodapeAcesso";
-import { TituloHeader } from "../components/TituloHeader";
-import { CaixaDeTexto } from "../components/CaixaDeTexto";
+import { useAppSelector } from "../../store/hooks";
+import { CorpoPrincipal } from "../../components/Auth/CorpoPrincipal";
+import { Header } from "../../components/Auth/Header";
+import { PageLayout } from "../../components/PageLayout";
+import { RodapeAcesso } from "../../components/Auth/RodapeAcesso";
+import { TituloHeader } from "../../components/Auth/TituloHeader";
+import { CaixaDeTexto } from "../../components/Auth/CaixaDeTexto";
 
 const TokenInvalidoPage = () => {
   const navigate = useNavigate();

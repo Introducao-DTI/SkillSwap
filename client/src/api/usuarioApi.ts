@@ -1,5 +1,5 @@
-import { api } from "../../../lib/api";
-import type { InformacoesDTO, UsuarioDTO } from "../types";
+import { api } from "../lib/api";
+import type { InformacoesDTO, UsuarioDTO } from "../types/Auth";
 
 export type CriarUsuarioRequest = {
   nome: string;

@@ -1,6 +1,6 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useRef } from "react";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   setEmailConvite,
   setNomeConvite,
@@ -9,8 +9,8 @@ import {
   setUsuarioId,
   setEtapaCadastro,
   resetAuth,
-} from "../../../store/slices/authSlice";
-import { conviteApi } from "../api/conviteApi";
+} from "../../store/slices/authSlice";
+import { conviteApi } from "../../api/conviteApi";
 
 export const useTokenConvite = () => {
   const { tokenConvite, etapaCadastro } = useAppSelector((state) => state.auth);

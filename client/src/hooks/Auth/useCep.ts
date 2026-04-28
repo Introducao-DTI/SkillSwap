@@ -5,8 +5,8 @@ import {
   type Control,
   type UseFormClearErrors,
 } from "react-hook-form";
-import { buscarCep } from "../api/cepApi";
-import type { CompleteEnderecoFormData } from "../schemas/completeEnderecoSchema";
+import { buscarCep } from "../../api/cepApi";
+import type { CompleteEnderecoFormData } from "../../schemas/Auth/completeEnderecoSchema";
 
 type UseCepProps = {
   control: Control<CompleteEnderecoFormData>;

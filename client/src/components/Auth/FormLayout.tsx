@@ -1,4 +1,4 @@
-import type { FormLayoutProps } from "../types";
+import type { FormLayoutProps } from "../../types/Auth";
 
 export const FormLayout = ({ children, onSubmit }: FormLayoutProps) => {
   return (

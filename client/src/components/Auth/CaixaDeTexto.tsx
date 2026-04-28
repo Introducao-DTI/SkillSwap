@@ -1,4 +1,4 @@
-import type { CaixaDeTextoProps } from "../types";
+import type { CaixaDeTextoProps } from "../../types/Auth";
 
 export const CaixaDeTexto = ({
   children,

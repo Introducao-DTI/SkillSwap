@@ -1,4 +1,4 @@
-import type { CorpoPrincipalProps } from "../types";
+import type { CorpoPrincipalProps } from "../../types/Auth";
 
 export const CorpoPrincipal = ({ children }: CorpoPrincipalProps) => {
   return (

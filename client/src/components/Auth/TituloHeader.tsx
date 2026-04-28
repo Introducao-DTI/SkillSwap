@@ -1,4 +1,4 @@
-import type { TituloHeaderProps } from "../types";
+import type { TituloHeaderProps } from "../../types/Auth";
 
 export const TituloHeader = ({ children }: TituloHeaderProps) => (
   <div className="w-full">

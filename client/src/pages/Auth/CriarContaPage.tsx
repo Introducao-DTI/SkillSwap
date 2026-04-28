@@ -1,22 +1,22 @@
-import { Button } from "../../../components/Button/Button";
-import { Input } from "../../../components/Input/Input";
-import { PageLayout } from "../../../components/PageLayout";
-import { CorpoPrincipal } from "../components/CorpoPrincipal";
-import { Divisor } from "../components/Divisor";
-import { FormLayout } from "../components/FormLayout";
-import { FormRow } from "../components/FormRow";
-import { Header } from "../components/Header";
-import { RodapeAcesso } from "../components/RodapeAcesso";
-import { TituloHeader } from "../components/TituloHeader";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { Button } from "../../components/Button/Button";
+import { Input } from "../../components/Input/Input";
+import { PageLayout } from "../../components/PageLayout";
+import { CorpoPrincipal } from "../../components/Auth/CorpoPrincipal";
+import { Divisor } from "../../components/Auth/Divisor";
+import { FormLayout } from "../../components/Auth/FormLayout";
+import { FormRow } from "../../components/Auth/FormRow";
+import { Header } from "../../components/Auth/Header";
+import { RodapeAcesso } from "../../components/Auth/RodapeAcesso";
+import { TituloHeader } from "../../components/Auth/TituloHeader";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { useNavigate } from "react-router-dom";
 import {
   criarContaSchema,
   type CriarContaFormData,
-} from "../schemas/criarContaSchema";
+} from "../../schemas/Auth/criarContaSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usuarioApi } from "../api/usuarioApi";
+import { usuarioApi } from "../../api/usuarioApi";
 import {
   setNomeUsuario,
   setRoleUsuario,
@@ -24,7 +24,7 @@ import {
   setEmailUsuario,
   setTelefoneUsuario,
   setEtapaCadastro,
-} from "../../../store/slices/authSlice";
+} from "../../store/slices/authSlice";
 import { useState } from "react";
 
 const CriarContaPage = () => {

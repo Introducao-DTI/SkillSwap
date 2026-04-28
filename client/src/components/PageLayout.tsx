@@ -4,7 +4,7 @@ import {
   BellRing
 } from "lucide-react";
 import { Menu } from "./Menu";
-import SkillSwap from "../assets/SkillSwap.png";
+import SkillSwap from "../assets/logo-skillswap-full-original.webp";
 import { Button } from "./Button/Button";
 
 type Props = {
