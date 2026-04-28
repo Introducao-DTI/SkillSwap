@@ -48,9 +48,8 @@ const recentActivities = [
 
 export const DashboardAdm = () => {
   return (
-    <PageLayout className="space-y-6">
+    <PageLayout className="max-w-6xl mx-auto space-y-6">
       <OnbordingCard />
-
       <section className="grid gap-4 md:grid-cols-2">
         <Painel title="Painel de Atenção" description="Itens que precisam de ação rapida hoje." metrics={metricsAttention}/>
 

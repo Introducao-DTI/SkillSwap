@@ -5,7 +5,7 @@ import { DashboardAdm } from '../pages/dashboardAdm';
 export const DashboardRoutes = () => {
   return(
       <Routes>
-        <Route path="" element={<DashboardAdm />} />
+        <Route path="/adm" element={<DashboardAdm />} />
       </Routes>
   );
 }

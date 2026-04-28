@@ -15,7 +15,7 @@ export const OnbordingCard = () => (
           so lugar.
         </p>
 
-       <div className="mt-6 flex gap-4">
+       <div className="mt-6 flex flex-wrap gap-4">
             <Button
                 variant="primary"
                 theme="accent-red"
