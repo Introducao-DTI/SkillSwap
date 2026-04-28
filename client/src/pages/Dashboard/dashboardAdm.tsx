@@ -1,8 +1,8 @@
-import { PageLayout } from "../components/PageLayout";
-import { Painel } from "../components/Dashboard/Painel";
-import GraphOfMetrics from "../components/Dashboard/Graph";
-import { FeedActivity } from "../components/Dashboard/FeedActivity";
-import { OnbordingCard } from "../components/Dashboard/OnbordingCard";
+import { PageLayout } from "../../components/PageLayout";
+import { Painel } from "../../components/Dashboard/Painel";
+import GraphOfMetrics from "../../components/Dashboard/Graph";
+import { FeedActivity } from "../../components/Dashboard/FeedActivity";
+import { OnbordingCard } from "../../components/Dashboard/OnbordingCard";
 
 const metricsAttention = [
   { name: "Chamados", number: 4 },
