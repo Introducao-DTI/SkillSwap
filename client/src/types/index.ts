@@ -4,6 +4,7 @@ export type ButtonProps = React.PropsWithChildren<{
   fullWidth?: boolean;
   theme?: "primary-dark" | "accent-red";
   type?: "button" | "submit" | "reset";
+  className?: string;
 }>;
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {

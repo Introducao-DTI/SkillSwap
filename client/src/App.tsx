@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
-import { AuthRoutes } from "./features/auth/routes/AuthRoutes";
-import { useTokenConvite } from "./features/auth/hooks/useTokenConvite";
+import { AuthRoutes } from "./routes/Auth/AuthRoutes";
+import { DashboardRoutes } from "./routes/Dashboard/DashboardRoutes";
+import { useTokenConvite } from "./hooks/Auth/useTokenConvite";
 
 const App = () => {
   useTokenConvite();
@@ -8,6 +9,7 @@ const App = () => {
   return (
     <Routes>
       <Route path="/*" element={<AuthRoutes />} />
+      <Route path="/dashboard/*" element={<DashboardRoutes />} />
     </Routes>
   );
 };

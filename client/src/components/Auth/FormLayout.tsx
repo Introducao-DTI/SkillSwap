@@ -1,0 +1,9 @@
+import type { FormLayoutProps } from "../../types/Auth";
+
+export const FormLayout = ({ children, onSubmit }: FormLayoutProps) => {
+  return (
+    <form onSubmit={onSubmit} className="w-full flex flex-col gap-2 sm:gap-4">
+      {children}
+    </form>
+  );
+};
