@@ -1,4 +1,6 @@
 import axios from "axios";
+import { store } from "../store";
+import { useNavigate } from "react-router-dom";
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -6,3 +8,25 @@ export const api = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+api.interceptors.request.use((config) => {
+  const token = store.getState().auth.token;
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      store.dispatch({ type: "auth/resetAuth" });
+      const navigate = useNavigate();
+      navigate("/login");
+    }
+    return Promise.reject(error);
+  },
+);

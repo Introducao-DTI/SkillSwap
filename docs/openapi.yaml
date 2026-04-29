@@ -1381,6 +1381,35 @@ components:
             - admin
             - usuario
 
+    LoginRequestDTO:
+      type: object
+      required:
+        - email
+        - senha
+      properties:
+        email:
+          type: string
+          format: email
+        senha:
+          type: string
+          format: password
+
+    LoginResponseDTO:
+      type: object
+      required:
+        - token
+        - nome
+        - role
+      properties:
+        token:
+          type: string
+          description: Token JWT para autenticação nas próximas requisições
+        nome:
+          type: string
+        role:
+          type: string
+          enum: [admin, usuario]
+
     CriarUsuarioRequestDTO:
       type: object
       required:

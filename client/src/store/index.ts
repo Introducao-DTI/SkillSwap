@@ -12,6 +12,18 @@ const storage = {
 const persistConfig = {
   key: "auth",
   storage,
+  whitelist: [
+    "idUsuario",
+    "roleUsuario",
+    "nomeUsuario",
+    "token",
+    "tokenConvite",
+    "etapaCadastro",
+    "emailConvite",
+    "nomeConvite",
+    "emailUsuario",
+    "telefoneUsuario",
+  ],
 };
 
 const persistedReducer = persistReducer(persistConfig, authReducer);

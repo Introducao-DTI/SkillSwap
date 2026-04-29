@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SkillSwap.Application.Usuarios.DTOs;
 using SkillSwap.Application.Usuarios.Services;
@@ -9,6 +10,7 @@ namespace SkillSwap.API.Controllers;
 public class UsuarioController(IUsuarioService usuarioService, IVerificacaoService verificacaoService) : ControllerBase
 {
     [HttpPost]
+    [AllowAnonymous]
     public async Task<IActionResult> CriarUsuario([FromBody] CriarUsuarioRequestDTO dto)
     {
         var resultado = await usuarioService.CriarUsuarioAsync(dto);
@@ -19,6 +21,7 @@ public class UsuarioController(IUsuarioService usuarioService, IVerificacaoServi
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<IActionResult> ObterUsuarioPorId(Guid id)
     {
         var resultado = await usuarioService.ObterUsuarioPorIdAsync(id);
@@ -29,6 +32,7 @@ public class UsuarioController(IUsuarioService usuarioService, IVerificacaoServi
     }
 
     [HttpPut("{id}/informacoes")]
+    [Authorize]
     public async Task<IActionResult> AtualizarInformacoes(Guid id, [FromBody] InformacoesDTO dto)
     {
         var resultado = await usuarioService.AtualizarInformacoesAsync(id, dto);
@@ -39,6 +43,7 @@ public class UsuarioController(IUsuarioService usuarioService, IVerificacaoServi
     }
 
     [HttpGet("{id}/informacoes")]
+    [Authorize]
     public async Task<IActionResult> ObterInformacoes(Guid id)
     {
         var resultado = await usuarioService.ObterInformacoesAsync(id);
@@ -49,6 +54,7 @@ public class UsuarioController(IUsuarioService usuarioService, IVerificacaoServi
     }
 
     [HttpPost("{id}/verificacao/enviar")]
+    [Authorize]
     public async Task<IActionResult> EnviarCodigoVerificacao(Guid id,
     [FromBody] EnviarCodigoRequestDTO dto)
     {
@@ -60,6 +66,7 @@ public class UsuarioController(IUsuarioService usuarioService, IVerificacaoServi
     }
 
     [HttpPost("{id}/verificacao/validar")]
+    [Authorize]
     public async Task<IActionResult> ValidarCodigoVerificacao(Guid id, [FromBody] ValidarCodigoRequestDTO dto)
     {
         var resultado = await verificacaoService.ValidarCodigoAsync(id, dto.Codigo);

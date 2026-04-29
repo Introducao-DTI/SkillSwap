@@ -9,12 +9,12 @@ namespace SkillSwap.Application.Usuarios.Services;
 
 public class UsuarioService(
 IUsuarioRepository usuarioRepository,
-ISenhaService senhaService, IConviteRepository conviteRepository) : IUsuarioService
+ISenhaService senhaService, IConviteRepository conviteRepository, ITokenService tokenService) : IUsuarioService
 {
-    public async Task<Result<UsuarioDTO>> CriarUsuarioAsync(CriarUsuarioRequestDTO dto)
+    public async Task<Result<CriarUsuarioResponseDTO>> CriarUsuarioAsync(CriarUsuarioRequestDTO dto)
     {
         if (await usuarioRepository.ExisteEmailAsync(dto.Email))
-            return Result<UsuarioDTO>.Falha("Este email já está em uso.");
+            return Result<CriarUsuarioResponseDTO>.Falha("Este email já está em uso.");
 
         var senhaHash = senhaService.HashSenha(dto.Senha);
 
@@ -34,7 +34,9 @@ ISenhaService senhaService, IConviteRepository conviteRepository) : IUsuarioServ
             await conviteRepository.AtualizarAsync(convite);
         }
 
-        return Result<UsuarioDTO>.Ok(new UsuarioDTO(usuario.Id, usuario.Nome, usuario.Role));
+        var token = tokenService.GenerateToken(usuario.Id, usuario.Email, usuario.Role.ToString());
+
+        return Result<CriarUsuarioResponseDTO>.Ok(new CriarUsuarioResponseDTO(usuario.Id, usuario.Nome, usuario.Role, token));
     }
 
     public async Task<Result<UsuarioDTO>> ObterUsuarioPorIdAsync(Guid id)
