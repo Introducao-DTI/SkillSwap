@@ -33,7 +33,7 @@ const GerarConvitePage = () => {
   };
 
   const handleIrParaDashboard = () => {
-    navigate("/dashboard");
+    navigate("/login");
   };
 
   return (

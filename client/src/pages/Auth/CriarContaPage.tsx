@@ -24,6 +24,7 @@ import {
   setEmailUsuario,
   setTelefoneUsuario,
   setEtapaCadastro,
+  setToken,
 } from "../../store/slices/authSlice";
 import { useState } from "react";
 
@@ -64,6 +65,7 @@ const CriarContaPage = () => {
       dispatch(setRoleUsuario(usuario.role));
       dispatch(setEmailUsuario(data.email));
       dispatch(setTelefoneUsuario(data.telefone));
+      dispatch(setToken(usuario.token));
       dispatch(setEtapaCadastro("completar-dados"));
 
       navigate("/completar-dados");

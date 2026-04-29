@@ -19,6 +19,7 @@ public static class DependencyInjection
 
         services.AddScoped<ISenhaService, SenhaService>();
         services.AddScoped<IEmailService, SmtpEmailService>();
+        services.AddScoped<ITokenService, TokenService>();
 
 
         services.AddDbContext<SkillSwapDbContext>(options =>

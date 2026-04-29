@@ -12,6 +12,7 @@ type AuthState = {
   nomeConvite: string | null;
   tokenConvite: string | null;
   etapaCadastro: string;
+  token: string | null;
 };
 
 const initialState: AuthState = {
@@ -24,6 +25,7 @@ const initialState: AuthState = {
   nomeConvite: null,
   tokenConvite: null,
   etapaCadastro: "bem-vindo",
+  token: null,
 };
 
 const authSlice = createSlice({
@@ -57,6 +59,9 @@ const authSlice = createSlice({
     setEtapaCadastro(state, action: PayloadAction<string>) {
       state.etapaCadastro = action.payload;
     },
+    setToken(state, action: PayloadAction<string | null>) {
+      state.token = action.payload;
+    },
     resetAuth: () => initialState,
   },
 });
@@ -72,6 +77,7 @@ export const {
   setTokenConvite,
   resetAuth,
   setEtapaCadastro,
+  setToken,
 } = authSlice.actions;
 
 export default authSlice.reducer;

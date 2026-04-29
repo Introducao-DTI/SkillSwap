@@ -23,6 +23,7 @@ export type UsuarioDTO = {
   id: string;
   nome: string;
   role: "Admin" | "Usuario";
+  token: string;
 };
 
 export type InformacoesDTO = {
