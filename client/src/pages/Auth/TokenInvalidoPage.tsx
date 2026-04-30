@@ -30,21 +30,13 @@ const TokenInvalidoPage = () => {
       </Header>
 
       <CorpoPrincipal>
-        {etapaCadastro === "concluido" ? (
+        {etapaCadastro === "concluido" && (
           <Button
             theme="accent-red"
             variant="primary"
             onClick={() => navigate("/login")}
           >
             Voltar para Acesso
-          </Button>
-        ) : (
-          <Button
-            theme="accent-red"
-            variant="primary"
-            onClick={() => navigate("/solicitar-convite")}
-          >
-            Solicitar Novo Convite
           </Button>
         )}
       </CorpoPrincipal>

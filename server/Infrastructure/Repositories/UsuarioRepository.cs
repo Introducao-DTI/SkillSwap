@@ -20,6 +20,11 @@ public class UsuarioRepository(SkillSwapDbContext _context) : IUsuarioRepository
         return await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
     }
 
+    public async Task<Usuario?> ObterUsuarioPorEmailAsync(string email)
+    {
+        return await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+    }
+
     public async Task<bool> ExisteEmailAsync(string email)
     {
         return await _context.Usuarios.AnyAsync(u => u.Email == email);
