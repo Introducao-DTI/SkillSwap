@@ -18,28 +18,24 @@ const recentActivities = [
     detail: "Ana Souza validou a mentoria de UX Design.",
     time: "ha 12 min",
     status: "Concluido",
-    tone: "success",
   },
   {
     title: "Chamado aberto",
     detail: "Novo chamado de suporte para acesso a plataforma.",
     time: "ha 27 min",
-    status: "Urgente",
-    tone: "alert",
+    status: "Urgente", 
   },
   {
     title: "Colaborador convidado",
     detail: "Convite enviado para marcos@skillswap.com.",
     time: "ha 1 h",
-    status: "Novo",
-    tone: "info",
+    status: "Novo"
   },
   {
     title: "Mentoria congelada",
     detail: "Sessao pausada por falta de confirmacao do mentor.",
     time: "ha 2 h",
     status: "Atencao",
-    tone: "warning",
   },
 ];
 
@@ -55,15 +51,14 @@ export const DashboardAdm = () => {
       />
 
       <section className="grid gap-4 md:grid-cols-2">
-        <Painel>
+        <Painel title="Gráficos de Engajamento">
+          <GraphOfMetrics />
+        </Painel>
+
+        <Painel title="Feed de Atividades">
           <FeedActivity Activities={recentActivities} />
         </Painel>
 
-        <Painel 
-          title="Gráficos de Engajamento" 
-        >
-          <GraphOfMetrics />
-        </Painel>
       </section>
     </PageLayout>
   );

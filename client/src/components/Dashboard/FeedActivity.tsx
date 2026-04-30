@@ -7,32 +7,10 @@ type activity = {
     detail: string;
     time: string;
     status: string;
-    tone: string;
 }
-
-const activityStyles = {
-  success: {
-    dot: "bg-emerald-500",
-    badge: "bg-emerald-100 text-emerald-700",
-  },
-  alert: {
-    dot: "bg-accent-red",
-    badge: "bg-red-100 text-red-700",
-  },
-  info: {
-    dot: "bg-sky-500",
-    badge: "bg-sky-100 text-sky-700",
-  },
-  warning: {
-    dot: "bg-amber-500",
-    badge: "bg-amber-100 text-amber-700",
-  },
-} as const;
 
 export const FeedActivity = ({ Activities }: Props) => (
     <div className="w-full space-y-3">
-        <h4 className="text-primary-dark text-center">Feed de Atividades Recentes</h4>
-
         {(Activities || []).map((activity) => {
             return (
                 <div

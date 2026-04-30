@@ -20,16 +20,16 @@ export const Painel = ({ children, title, description, metrics, fullWidth = fals
 
   return (
     <section className="rounded-2xl border border-primary-dark/10 bg-white p-2 md:p-5 shadow-sm">
-      <h4 className="text-primary-dark">{title}</h4>
+      <h2 className="text-primary-dark font-bold">{title}</h2>
         <div className="mt-4">
             <div className="space-y-3">
                 <p className="text-support text-primary-dark/70">
                     {description}
                 </p>
-                <div className="rounded-xl md:bg-neutral-cream md:p-4">
+                <div>
                     {(metrics || []).length > 0 ? (
                       <div className="flex flex-col gap-4">
-                        <div className="flex w-full">
+                        <div className="flex w-full md:gap-6">
                           {(metricsCritical || []).map((item, index) => (
                             <div 
                               key={index} 
@@ -38,7 +38,7 @@ export const Painel = ({ children, title, description, metrics, fullWidth = fals
                               <p className="md:text-2xl text-white text-center">
                                 {item.name}
                               </p>
-                              <p className="mt-2 ml-3 text-5xl font-semibold text-white flex justify-end">
+                              <p className="mt-2 ml-3 text-5xl md:text-6xl font-semibold text-white flex justify-end">
                                 <AnimatedNumber value={item.number} />
                               </p>
                             </div>
@@ -54,7 +54,7 @@ export const Painel = ({ children, title, description, metrics, fullWidth = fals
                               <p className="text-support md:text-xl text-primary-dark">
                                 {item.name}
                               </p>
-                              <p className="mt-2 text-4xl font-semibold text-white flex justify-end">
+                              <p className="mt-2 text-4xl md:text-5xl font-semibold text-white flex justify-end">
                                 <AnimatedNumber value={item.number} />
                               </p>
                             </div>
