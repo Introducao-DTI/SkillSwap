@@ -6,7 +6,6 @@ using SkillSwap.Core.Empresas.Ports.Out;
 using SkillSwap.Infrastructure.Data;
 using SkillSwap.Infrastructure.Repositories;
 using SkillSwap.Infrastructure.Security;
-using SkillSwap.Infrastructure.Services;
 
 namespace SkillSwap.Infrastructure;
 
@@ -22,7 +21,9 @@ public static class DependencyInjection
         services.AddScoped<ISenhaService, SenhaService>();
         services.AddScoped<IEmailService, SmtpEmailService>();
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<ITenantService, TenantService>();
 
+        services.AddHttpContextAccessor();
 
         services.AddDbContext<MasterDbContext>(options =>
             options.UseSqlite(

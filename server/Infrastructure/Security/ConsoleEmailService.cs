@@ -1,6 +1,6 @@
 using SkillSwap.Core.Usuarios.Ports.Out;
 
-namespace SkillSwap.Infrastructure.Services;
+namespace SkillSwap.Infrastructure.Security;
 
 public class ConsoleEmailService : IEmailService
 {

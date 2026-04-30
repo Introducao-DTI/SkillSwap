@@ -3,7 +3,7 @@ using MimeKit;
 using SkillSwap.Core.Usuarios.Ports.Out;
 using Microsoft.Extensions.Configuration;
 
-namespace SkillSwap.Infrastructure.Services;
+namespace SkillSwap.Infrastructure.Security;
 
 public class SmtpEmailService(IConfiguration configuration) : IEmailService
 {
