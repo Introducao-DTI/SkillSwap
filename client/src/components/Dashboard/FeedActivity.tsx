@@ -35,7 +35,7 @@ export const FeedActivity = ({ Activities }: Props) => (
                             </div>
 
                             <span className="shrink-0 rounded-full px-2 py-1 text-[10px] text-primary-light font-semibold uppercase tracking-[0.14em]">
-                                <span className="inline-flex mr-0.5 mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-primary-light" />
+                                <span className="inline-flex mr-1.5 mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-primary-light" />
                                 {activity.time}
                             </span>
                         </div>
