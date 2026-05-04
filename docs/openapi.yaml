@@ -125,6 +125,48 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  /api/v1/auth/login:
+    post:
+      tags:
+        - Autenticação
+      summary: Autenticar usuário
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequestDTO"
+      responses:
+        "200":
+          description: Login realizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponseDTO"
+        "401":
+          description: Email ou senha inválidos
+
+  /api/v1/convite/consumir:
+    post:
+      tags:
+        - Convites
+      summary: Consome um token de convite após cadastro concluído
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+      responses:
+        "200":
+          description: Token consumido com sucesso
+        "400":
+          description: Token inválido ou já utilizado
+
   /api/v1/usuario/{id}:
     parameters:
       - name: id
@@ -1293,23 +1335,23 @@ paths:
 components:
   schemas:
     GerarConviteRequestDTO:
-    type: object
-    required:
-      - email
-      - nome
-      - role
-    properties:
-      email:
-        type: string
-        format: email
-        description: Email do usuário convidado
-      nome:
-        type: string
-        description: Nome do usuário convidado
-      role:
-        type: string
-        enum: [Admin, Usuario]
-        description: Papel do usuário na plataforma
+      type: object
+      required:
+        - email
+        - nome
+        - role
+      properties:
+        email:
+          type: string
+          format: email
+          description: Email do usuário convidado
+        nome:
+          type: string
+          description: Nome do usuário convidado
+        role:
+          type: string
+          enum: [Admin, Usuario]
+          description: Papel do usuário na plataforma
 
     ConviteDTO:
       type: object
@@ -1335,6 +1377,14 @@ components:
           type: string
           format: date-time
           description: Data e hora de expiração do convite
+        usuario_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: ID do usuário vinculado ao convite (preenchido após cadastro)
+        etapa:
+          type: string
+          description: Etapa atual do cadastro para retomada
 
     SetupEmpresaRequestDTO:
       type: object
@@ -1343,6 +1393,10 @@ components:
         token_convite:
           type: string
           description: O hash único que estava no link enviado para o e-mail do cliente (ex. skillswap.com/setup?token=ABC123XYZ)
+        usuario_admin_id:
+          type: string
+          format: uuid
+          description: O ID do usuário que está completando o setup.
         dados_empresa:
           type: object
           required: [razao_social, cnpj]
@@ -1356,8 +1410,19 @@ components:
             dominio_acesso:
               type: string
               description: Opcional. Exemplo "empresaX" para criar o subdominio empresax.skillswap.com
-        dados_admin:
-          $ref: "#/components/schemas/CriarUsuarioRequestDTO"
+
+    SetupEmpresaResponseDTO:
+      description: Resposta após completar o setup da empresa
+      properties:
+        token_acesso:
+          type: string
+          description: Token JWT para autenticação do usuário admin criado durante o setup
+        empresa_id:
+          type: string
+          format: uuid
+        admin_id:
+          type: string
+          format: uuid
 
     UsuarioId:
       description: O identificador único do usuário (UUID)
@@ -1858,10 +1923,10 @@ components:
             $ref: "#/components/schemas/Error"
 
   securitySchemes:
-    ApiKey:
-      type: apiKey
-      in: header
-      name: X-Api-Key
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 
-security:
-  - ApiKey: []
+  security:
+    - Bearer: []
