@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using SkillSwap.Application.Usuarios.Services;
 using SkillSwap.Application.Verificacao.Services;
+using SkillSwap.Application.Empresas.Services;
 
 namespace SkillSwap.Application;
 
@@ -12,6 +13,7 @@ public static class DependencyInjection
         services.AddScoped<IVerificacaoService, VerificacaoService>();
         services.AddScoped<IConviteService, ConviteService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<ISetupService, SetupService>();
 
         return services;
     }
