@@ -52,7 +52,7 @@ export const PageLayout = ({
             </Button>
 
             <p className="text-support uppercase tracking-[0.2em] text-accent-red">
-              Olá, Geovanna!
+              Olá, usuário!
             </p>
 
             <Button
@@ -67,7 +67,14 @@ export const PageLayout = ({
 
         {showMenu && (
           <div className="mb-6 hidden items-center justify-between md:flex">
-            <img src={SkillSwap} className="w-30" alt="SkillSwap" />
+            <div className="flex items-center gap-6">
+              <img src={SkillSwap} className="w-30" alt="SkillSwap" />
+
+              <p className="text-support uppercase tracking-[0.2em] text-accent-red">
+                Olá, usuário!
+              </p>
+
+            </div>
 
             <Button
               theme="accent-red"

@@ -47,11 +47,11 @@ const items: MenuItem[] = [
     icon: Zap,
   },
   {
-    label: "Operaçoes e Pessoas",
+    label: "Operações e pessoas",
     icon: Handshake,
     subItems: [
       { label: "Gestão de Pessoas", icon: BookUser , href: "/" },
-      { label: "Aprovações de Habilidades", icon: BadgeCheck, href: "/" },
+      { label: "Aprovações", icon: BadgeCheck, href: "/" },
     ],
   },
   {
@@ -66,8 +66,8 @@ const items: MenuItem[] = [
     label: "Gamificação",
     icon: Wallet,
     subItems: [
-      { label: "Catálogo do Marketplace", icon: Store, href: "/" },
-      { label: "Pedidos de Resgate", icon: HandCoins, href: "/" },
+      { label: "Marketplace", icon: Store, href: "/" },
+      { label: "Novos Pedidos", icon: HandCoins, href: "/" },
     ],
   },
   {
@@ -75,14 +75,14 @@ const items: MenuItem[] = [
     icon: FileChartColumn,
     subItems: [
       { label: "Auditoria de Logs", icon: ChartNoAxesCombined, href: "/" },
-      { label: "Moderação de Feedbacks", icon: MessageCircleCheck, href: "/" },
+      { label: "Feedbacks", icon: MessageCircleCheck, href: "/" },
       { label: "Dados da Empresa", icon: Building2, href: "/" },
     ],
   },
 ];
 
 const profileItem = {
-  label: "Logado como Geovanna",
+  label: "Usuário",
   href: "/",
   icon: Users,
 };
@@ -94,7 +94,13 @@ type NavItemsProps = {
 };
 
 const baseItemClass =
-  "flex w-full items-center rounded-xl px-1 py-3 text-primary-dark transition-colors hover:bg-white/50";
+  "flex w-full items-center rounded-xl py-1 text-primary-dark transition-colors hover:bg-white/50";
+
+const iconSlotClass = "flex h-8 w-14 shrink-0 items-center justify-center";
+const labelSlotClass =
+  "min-w-0 overflow-hidden whitespace-nowrap text-link transition-[max-width,opacity] duration-300";
+const labelExpandedClass = "max-w-44 opacity-100";
+const labelCollapsedClass = "max-w-0 opacity-0";
 
 const NavItems = ({ isCollapsed, openItem, onToggleItem }: NavItemsProps) => {
   return (
@@ -108,29 +114,34 @@ const NavItems = ({ isCollapsed, openItem, onToggleItem }: NavItemsProps) => {
             <div key={label} className="overflow-hidden rounded-xl">
               <button
                 type="button"
-                className={`
-                  ${baseItemClass}
-                  ${isCollapsed ? "justify-center" : "justify-between gap-1"}
-                `}
+                className={baseItemClass}
                 onClick={() => onToggleItem(label, true)}
               >
-                <span
-                  className={`flex items-center ${isCollapsed ? "justify-center" : "gap-2"}`}
-                >
-                  <Icon size={20} />
-                  {!isCollapsed && <span className="text-link">{label}</span>}
+                <span className="flex min-w-0 flex-1 items-center">
+                  <span className={iconSlotClass}>
+                    <Icon size={18} />
+                  </span>
+
+                  <span
+                    className={`
+                      ${labelSlotClass} ${isCollapsed ? labelCollapsedClass : labelExpandedClass}
+                    `}
+                    title={label}
+                  >
+                    <span className="block truncate">{label}</span>
+                  </span>
                 </span>
 
                 {!isCollapsed && (
                   <ChevronDown
                     size={18}
-                    className={`transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
+                    className={`ml-1 mr-4 shrink-0 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
                   />
                 )}
               </button>
 
               {!isCollapsed && isExpanded && (
-                <div className="mt-1 space-y-1 pl-5">
+                <div className="mt-1 space-y-1 pl-8">
                   {subItems?.map((subItem) => (
                     <Link
                       key={subItem.label}
@@ -148,17 +159,26 @@ const NavItems = ({ isCollapsed, openItem, onToggleItem }: NavItemsProps) => {
         }
 
         return (
-          <Link
-            key={label}
-            to={href ?? "/"}
-            className={`
-              ${baseItemClass}
-              ${isCollapsed ? "justify-center" : "justify-start gap-3"}
-            `}
-          >
-            <Icon size={20} />
-            {!isCollapsed && <span className="text-link">{label}</span>}
-          </Link>
+         <Link
+          key={label}
+          to={href ?? "/"}
+          className={baseItemClass}
+        >
+          <span className="flex min-w-0 flex-1 items-center">
+            <span className={iconSlotClass}>
+              <Icon size={20} />
+            </span>
+
+            <span
+              className={`
+                ${labelSlotClass} ${isCollapsed ? labelCollapsedClass : labelExpandedClass}
+              `}
+              title={label}
+            >
+              <span className="block truncate">{label}</span>
+            </span>
+          </span>
+        </Link>
         );
       })}
     </nav>
@@ -187,7 +207,7 @@ export const Menu = ({ isOpen, setIsOpen }: Props) => {
     <>
       <aside
         className={`
-          fixed top-0 left-0 z-50 flex h-screen w-64 flex-col border-r border-primary-dark/10
+          fixed top-0 left-0 z-50 flex h-screen w-72 flex-col border-r border-primary-dark/10
           bg-neutral-pink shadow-sm transition-transform duration-300
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
           md:hidden
@@ -228,13 +248,13 @@ export const Menu = ({ isOpen, setIsOpen }: Props) => {
         className={`
           sticky top-0 hidden h-screen flex-col border-r border-primary-dark/10 bg-neutral-pink
           shadow-sm transition-all duration-300 md:flex
-          ${isOpen ? "w-64" : "w-20"}
+          ${isOpen ? "w-72" : "w-20"}
         `}
       >
         <div
-          className={`flex items-center p-4 ${isOpen ? "justify-between" : "justify-center"}`}
+          className={`flex items-center px-3 py-4 ${isOpen ? "justify-between" : "justify-center"}`}
         >
-          {isOpen && <img src={SkillSwap} className="w-28" alt="SkillSwap" />}
+          {isOpen && <img src={SkillSwap} className="w-28 shrink-0" alt="SkillSwap" />}
 
           <button
             type="button"
@@ -256,13 +276,19 @@ export const Menu = ({ isOpen, setIsOpen }: Props) => {
             <Link
               to={profileItem.href}
               className={`
-                flex items-center rounded-xl px-3 py-3 text-primary-dark
+                flex items-center rounded-xl py-3 text-primary-dark
                 transition-colors hover:bg-white/50
-                ${isOpen ? "justify-start gap-3" : "justify-center"}
               `}
             >
-              <ProfileIcon size={20} />
-              {isOpen && <span className="text-link">{profileItem.label}</span>}
+              <span className={iconSlotClass}>
+                <ProfileIcon size={20} />
+              </span>
+              <span
+                className={`${labelSlotClass} ${isOpen ? labelExpandedClass : labelCollapsedClass}`}
+                title={profileItem.label}
+              >
+                <span className="block truncate">{profileItem.label}</span>
+              </span>
             </Link>
           </div>
         </div>

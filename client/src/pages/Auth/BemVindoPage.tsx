@@ -1,12 +1,12 @@
 import { Button } from "../../components/Button/Button";
 import { CaixaDeTexto } from "../../components/Auth/CaixaDeTexto";
-import { PageLayout } from "../../components/PageLayout";
 import { CorpoPrincipal } from "../../components/Auth/CorpoPrincipal";
 import { Header } from "../../components/Auth/Header";
 import { RodapeAcesso } from "../../components/Auth/RodapeAcesso";
 import { TituloHeader } from "../../components/Auth/TituloHeader";
 import { useAppSelector } from "../../store/hooks";
 import { useNavigate } from "react-router-dom";
+import { AuthLayout } from "../../components/Auth/AuthLayout";
 
 const BemVindoPage = () => {
   const { roleUsuario, nomeConvite } = useAppSelector((state) => state.auth);
@@ -17,7 +17,7 @@ const BemVindoPage = () => {
   };
 
   return (
-    <PageLayout>
+    <AuthLayout>
       <Header>
         <TituloHeader>Olá {nomeConvite}!</TituloHeader>
         <CaixaDeTexto>
@@ -49,7 +49,7 @@ const BemVindoPage = () => {
       </CorpoPrincipal>
 
       <RodapeAcesso />
-    </PageLayout>
+    </AuthLayout>
   );
 };
 

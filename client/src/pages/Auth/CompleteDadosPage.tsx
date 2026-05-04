@@ -1,6 +1,5 @@
 import { Button } from "../../components/Button/Button";
 import { Input } from "../../components/Input/Input";
-import { PageLayout } from "../../components/PageLayout";
 import { CaixaDeTexto } from "../../components/Auth/CaixaDeTexto";
 import { CorpoPrincipal } from "../../components/Auth/CorpoPrincipal";
 import { FormLayout } from "../../components/Auth/FormLayout";
@@ -25,6 +24,7 @@ import { useCep } from "../../hooks/Auth/useCep";
 import { usuarioApi } from "../../api/usuarioApi";
 import { useState } from "react";
 import { setEtapaCadastro, setToken } from "../../store/slices/authSlice";
+import { AuthLayout } from "../../components/Auth/AuthLayout";
 
 const CompleteDadosPage = () => {
   const {
@@ -113,7 +113,7 @@ const CompleteDadosPage = () => {
   };
 
   return (
-    <PageLayout>
+    <AuthLayout>
       <Header>
         {roleUsuario === "Admin" ? (
           <>
@@ -260,7 +260,7 @@ const CompleteDadosPage = () => {
       </CorpoPrincipal>
 
       <RodapeAcesso />
-    </PageLayout>
+    </AuthLayout>
   );
 };
 

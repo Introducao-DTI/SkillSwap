@@ -1,40 +1,70 @@
 type Props = {
   children?: React.ReactNode;
-  title: string;
+  title?: string;
   description?: string;
-  metrics?: MetricItem[]
+  metrics?: MetricItem[];
+  fullWidth?: boolean;
 };
 
 type MetricItem = {
   name: string;
   number: number;
+  statusCritical: boolean;
 }
 
 import { AnimatedNumber } from "../AnimateNumber";
 
-export const Painel = ({ children, title, description, metrics }: Props) => {
+export const Painel = ({ children, title, description, metrics, fullWidth = false }: Props) => {
+  const metricsCritical = metrics?.filter(metric => metric.statusCritical == true);
+  const metricsNoCritical = metrics?.filter(metric => metric.statusCritical == false);
+
   return (
-    <section className="rounded-2xl border border-primary-dark/10 bg-white p-5 shadow-sm">
-      <h4 className="text-primary-dark">{title}</h4>
+    <section className="rounded-2xl border border-primary-dark/10 bg-white p-2 md:p-5 shadow-sm">
+      <h2 className="text-primary-dark font-bold">{title}</h2>
         <div className="mt-4">
             <div className="space-y-3">
                 <p className="text-support text-primary-dark/70">
                     {description}
                 </p>
-                <div className={`rounded-xl bg-neutral-cream p-4 ${
-                    (metrics || []).length > 0 ? "flex justify-center gap-4 md:gap-8" : ""
-                  }`}>
+                <div>
                     {(metrics || []).length > 0 ? (
-                      (metrics || []).map((item, index) => (
-                        <div key={index}>
-                          <p className="mt-2 text-3xl font-semibold text-accent-red flex items-center justify-center">
-                            <AnimatedNumber value={item.number}/>
-                          </p>
-
-                          <p className="text-support text-primary-dark/70">{item.name}</p>
+                      <div className="flex flex-col gap-4">
+                        <div className="flex w-full md:gap-6">
+                          {(metricsCritical || []).map((item, index) => (
+                            <div 
+                              key={index} 
+                              className="bg-accent-red rounded-2xl p-2 md:p-5 mx-1 w-full flex justify-between"
+                            >
+                              <p className="md:text-2xl text-white text-center">
+                                {item.name}
+                              </p>
+                              <p className="mt-2 ml-3 text-5xl md:text-6xl font-semibold text-white flex justify-end">
+                                <AnimatedNumber value={item.number} />
+                              </p>
+                            </div>
+                          ))}
                         </div>
-                      ))
-                    ) : children}
+
+                        <div className="flex gap-2 md:w-full w-auto ">
+                          {(metricsNoCritical || []).map((item, index) => (
+                            <div 
+                              key={index}
+                              className="bg-primary-light rounded-2xl p-2 md:p-5 w-full"
+                            >
+                              <p className="text-support md:text-xl text-primary-dark">
+                                {item.name}
+                              </p>
+                              <p className="mt-2 text-4xl md:text-5xl font-semibold text-white flex justify-end">
+                                <AnimatedNumber value={item.number} />
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+
+                      </div>
+                    ) : (
+                      children
+                    )}
                 </div>
             </div>
         </div>
