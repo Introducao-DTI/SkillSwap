@@ -1,6 +1,5 @@
 import { Button } from "../../components/Button/Button";
 import { Input } from "../../components/Input/Input";
-import { PageLayout } from "../../components/PageLayout";
 import { CorpoPrincipal } from "../../components/Auth/CorpoPrincipal";
 import { Divisor } from "../../components/Auth/Divisor";
 import { FormLayout } from "../../components/Auth/FormLayout";
@@ -27,6 +26,7 @@ import {
   setToken,
 } from "../../store/slices/authSlice";
 import { useState } from "react";
+import { AuthLayout } from "../../components/Auth/AuthLayout";
 
 const CriarContaPage = () => {
   const { emailConvite, nomeConvite, tokenConvite } = useAppSelector(
@@ -79,7 +79,7 @@ const CriarContaPage = () => {
   };
 
   return (
-    <PageLayout>
+    <AuthLayout>
       <Header>
         <TituloHeader>
           Primeiro crie sua conta para realizar o seu acesso
@@ -156,7 +156,7 @@ const CriarContaPage = () => {
       </CorpoPrincipal>
 
       <RodapeAcesso />
-    </PageLayout>
+    </AuthLayout>
   );
 };
 

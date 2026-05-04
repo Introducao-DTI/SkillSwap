@@ -9,14 +9,17 @@ import {
   setNomeUsuario,
 } from "../../store/slices/authSlice";
 import { authApi } from "../../api/authApi";
-import { fazerLoginSchema, type FazerLoginFormData } from "../../schemas/Auth/fazerLoginSchema";
+import {
+  fazerLoginSchema,
+  type FazerLoginFormData,
+} from "../../schemas/Auth/fazerLoginSchema";
 import { Button } from "../../components/Button/Button";
 import { Input } from "../../components/Input/Input";
-import { PageLayout } from "../../components/PageLayout";
 import { CaixaDeTexto } from "../../components/Auth/CaixaDeTexto";
 import { CorpoPrincipal } from "../../components/Auth/CorpoPrincipal";
 import { FormLayout } from "../../components/Auth/FormLayout";
 import { FormRow } from "../../components/Auth/FormRow";
+import { AuthLayout } from "../../components/Auth/AuthLayout";
 import { Header } from "../../components/Auth/Header";
 import { RodapeAcesso } from "../../components/Auth/RodapeAcesso";
 import { TituloHeader } from "../../components/Auth/TituloHeader";
@@ -51,7 +54,7 @@ const LoginPage = () => {
   };
 
   return (
-    <PageLayout>
+    <AuthLayout>
       <Header>
         <TituloHeader>Faça login</TituloHeader>
         <CaixaDeTexto>
@@ -90,7 +93,7 @@ const LoginPage = () => {
         </FormLayout>
       </CorpoPrincipal>
       <RodapeAcesso /> {/* ✅ adicionado */}
-    </PageLayout>
+    </AuthLayout>
   );
 };
 

@@ -1,6 +1,5 @@
 import { Button } from "../../components/Button/Button";
 import { Input } from "../../components/Input/Input";
-import { PageLayout } from "../../components/PageLayout";
 import { Select } from "../../components/Select";
 import { CaixaDeTexto } from "../../components/Auth/CaixaDeTexto";
 import { CorpoPrincipal } from "../../components/Auth/CorpoPrincipal";
@@ -16,6 +15,7 @@ import {
 } from "../../schemas/Auth/gerarConviteSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AuthLayout } from "../../components/Auth/AuthLayout";
 
 const GerarConvitePage = () => {
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const GerarConvitePage = () => {
   };
 
   return (
-    <PageLayout>
+    <AuthLayout>
       <Header>
         <TituloHeader>Convide mais pessoas</TituloHeader>
         <CaixaDeTexto variant="primary">
@@ -96,7 +96,7 @@ const GerarConvitePage = () => {
       </CorpoPrincipal>
 
       <RodapeAcesso />
-    </PageLayout>
+    </AuthLayout>
   );
 };
 
