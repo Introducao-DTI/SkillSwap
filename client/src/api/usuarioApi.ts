@@ -21,6 +21,22 @@ export type AtualizarInformacoesRequest = {
   cep: string;
 };
 
+export type SetupEmpresaRequest = {
+  tokenConvite: string;
+  usuarioAdminId: string;
+  dadosEmpresa: {
+    cnpj: string;
+    razaoSocial: string;
+    dominioAcesso: string;
+  };
+};
+
+export type SetupEmpresaResponse = {
+  tokenAcesso: string;
+  empresaId: string;
+  adminId: string;
+};
+
 export const usuarioApi = {
   criar: async (dto: CriarUsuarioRequest): Promise<UsuarioDTO> => {
     const response = await api.post<UsuarioDTO>("/api/v1/usuario", dto);
@@ -55,5 +71,15 @@ export const usuarioApi = {
     codigo: string,
   ): Promise<void> => {
     await api.post(`/api/v1/usuario/${id}/verificacao/validar`, { codigo });
+  },
+
+  configurarEmpresa: async (
+    dto: SetupEmpresaRequest,
+  ): Promise<SetupEmpresaResponse> => {
+    const response = await api.post<SetupEmpresaResponse>(
+      "/api/v1/onboarding/setup",
+      dto,
+    );
+    return response.data;
   },
 };

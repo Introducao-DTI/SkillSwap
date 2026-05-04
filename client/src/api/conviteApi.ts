@@ -10,6 +10,20 @@ export type ConviteDTO = {
   etapa: string;
 };
 
+export type GerarConviteRequest = {
+  email: string;
+  nome: string;
+  role: "Admin" | "Usuario";
+};
+
+export type GerarConviteResponse = {
+  token: string;
+  email: string;
+  nome: string;
+  role: string;
+  expiracao: string;
+};
+
 export const conviteApi = {
   validarToken: async (token: string): Promise<ConviteDTO> => {
     const response = await api.get<ConviteDTO>(
@@ -20,5 +34,13 @@ export const conviteApi = {
 
   consumirToken: async (token: string): Promise<void> => {
     await api.post("/api/v1/convite/consumir", { token });
+  },
+
+  gerar: async (dto: GerarConviteRequest): Promise<GerarConviteResponse> => {
+    const response = await api.post<GerarConviteResponse>(
+      "/api/v1/convite/gerar",
+      dto,
+    );
+    return response.data;
   },
 };

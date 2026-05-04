@@ -7,16 +7,17 @@ public class TenantService(IHttpContextAccessor httpContextAccessor, IEmpresaRep
 {
   public Guid ObterEmpresaId()
   {
-    var context = httpContextAccessor.HttpContext
-        ?? throw new InvalidOperationException("HttpContext não disponível.");
+    var context = httpContextAccessor.HttpContext;
+    if (context == null) return Guid.Empty;
 
-    var claim = context.User.FindFirst("empresa_id")
-        ?? throw new UnauthorizedAccessException("Claim empresa_id não encontrada no token.");
+    var claim = context.User.FindFirst("empresa_id");
+    if (claim == null) return Guid.Empty;
 
     return Guid.TryParse(claim.Value, out var empresaId)
         ? empresaId
-        : throw new UnauthorizedAccessException("empresa_id inválido no token.");
+        : Guid.Empty;
   }
+
 
   public async Task<string> ObterBancoDeDadosAsync()
   {

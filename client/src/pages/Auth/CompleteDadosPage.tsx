@@ -24,11 +24,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useCep } from "../../hooks/Auth/useCep";
 import { usuarioApi } from "../../api/usuarioApi";
 import { useState } from "react";
-import { setEtapaCadastro } from "../../store/slices/authSlice";
+import { setEtapaCadastro, setToken } from "../../store/slices/authSlice";
 
 const CompleteDadosPage = () => {
-  const { roleUsuario, idUsuario, emailUsuario, telefoneUsuario } =
-    useAppSelector((state) => state.auth);
+  const {
+    roleUsuario,
+    idUsuario,
+    emailUsuario,
+    telefoneUsuario,
+    tokenConvite,
+  } = useAppSelector((state) => state.auth);
 
   const dispatch = useAppDispatch();
 
@@ -58,9 +63,28 @@ const CompleteDadosPage = () => {
   const { buscandoCep, erroCep } = useCep({ control, setValue, clearErrors });
 
   const onSubmitAdmin = (data: CompleteDadosAdminFormData) => {
-    console.log("Admin:", data);
-    dispatch(setEtapaCadastro("proteger-conta"));
-    navigate("/proteger-conta");
+    usuarioApi
+      .configurarEmpresa({
+        tokenConvite: tokenConvite!,
+        usuarioAdminId: idUsuario!,
+        dadosEmpresa: {
+          cnpj: data.cnpj,
+          razaoSocial: data.razaoSocial,
+          dominioAcesso: data.dominioAcesso,
+        },
+      })
+      .then((resposta) => {
+        dispatch(setToken(resposta.tokenAcesso));
+        navigate("/proteger-conta");
+        dispatch(setEtapaCadastro("proteger-conta"));
+      })
+      .catch((error) => {
+        setErroApi(
+          error instanceof Error
+            ? error.message
+            : "Ocorreu um erro ao configurar a empresa",
+        );
+      });
   };
 
   const onSubmitUsuario = async (data: CompleteEnderecoFormData) => {
@@ -139,6 +163,7 @@ const CompleteDadosPage = () => {
                 error={errorsAdmin.dominioAcesso?.message}
               />
             </FormRow>
+            {erroApi && <p className="text-accent-red text-sm">{erroApi}</p>}
             <Button
               theme="accent-red"
               variant="primary"

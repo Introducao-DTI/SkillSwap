@@ -35,11 +35,22 @@ public static class DependencyInjection
         services.AddScoped<SkillSwapDbContext>(provider =>
         {
             var tenantService = provider.GetRequiredService<ITenantService>();
-            var bancoDados = tenantService.ObterBancoDeDadosAsync().GetAwaiter().GetResult();
+            var empresaId = tenantService.ObterEmpresaId();
+
+            if (empresaId == Guid.Empty)
+            {
+                var defaultOptions = new DbContextOptionsBuilder<SkillSwapDbContext>()
+            .UseSqlite("Data Source=skillswap.db")
+            .Options;
+                return new SkillSwapDbContext(defaultOptions);
+            }
+
+            var bancoDados = tenantService.ObterBancoDeDadosAsync()
+        .GetAwaiter().GetResult();
 
             var options = new DbContextOptionsBuilder<SkillSwapDbContext>()
-                .UseSqlite($"Data Source={bancoDados}.db")
-                .Options;
+        .UseSqlite($"Data Source={bancoDados}.db")
+        .Options;
 
             return new SkillSwapDbContext(options);
         });

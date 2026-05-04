@@ -16,8 +16,12 @@ import {
 } from "../../schemas/Auth/gerarConviteSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { conviteApi } from "../../api/conviteApi";
 
 const GerarConvitePage = () => {
+  const [erroApi, setErroApi] = useState<string | null>(null);
+  const [linkConvite, setLinkConvite] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const {
@@ -28,8 +32,23 @@ const GerarConvitePage = () => {
     resolver: zodResolver(gerarConviteSchema),
   });
 
-  const onSubmit = (data: GerarConviteFormData) => {
-    console.log("Dados do formulário:", data);
+  const onSubmit = async (data: GerarConviteFormData) => {
+    try {
+      setErroApi(null);
+      setLinkConvite(null);
+      const resposta = await conviteApi.gerar({
+        email: data.email,
+        nome: data.nome,
+        role: data.roleUsuario,
+      });
+
+      const link = `${window.location.origin}/?token=${resposta.token}`;
+      setLinkConvite(link);
+    } catch (error) {
+      setErroApi(
+        error instanceof Error ? error.message : "Erro ao gerar convite.",
+      );
+    }
   };
 
   const handleIrParaDashboard = () => {
@@ -89,10 +108,30 @@ const GerarConvitePage = () => {
               Enviar Link de Convite
             </Button>
           </FormRow>
-          <Button variant="secondary" fullWidth onClick={handleIrParaDashboard}>
-            Ir Para Dashboard
-          </Button>
         </FormLayout>
+        <Button variant="secondary" fullWidth onClick={handleIrParaDashboard}>
+          Ir Para Dashboard
+        </Button>
+        {linkConvite && (
+          <div className="w-full flex flex-col gap-2">
+            <p className="text-support text-sm">Link gerado com sucesso:</p>
+            <div className="flex gap-2">
+              <Input
+                variant="disabled"
+                fullWidth
+                value={linkConvite}
+                readOnly
+              />
+              <Button
+                variant="secondary"
+                onClick={() => navigator.clipboard.writeText(linkConvite)}
+              >
+                Copiar
+              </Button>
+            </div>
+          </div>
+        )}
+        {erroApi && <p className="text-accent-red text-sm">{erroApi}</p>}
       </CorpoPrincipal>
 
       <RodapeAcesso />
