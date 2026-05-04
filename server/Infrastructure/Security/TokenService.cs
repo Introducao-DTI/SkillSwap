@@ -9,7 +9,7 @@ namespace SkillSwap.Infrastructure.Security;
 
 public class TokenService(IConfiguration configuration) : ITokenService
 {
-  public string GenerateToken(Guid usuarioId, string email, string role)
+  public string GenerateToken(Guid usuarioId, string email, string role, Guid? empresaId = null)
   {
 
     var securityKey = configuration["Jwt:SecretKey"]!;
@@ -20,13 +20,18 @@ public class TokenService(IConfiguration configuration) : ITokenService
     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
     var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-    var claims = new[]
+    var claims = new List<Claim>
     {
       new Claim(JwtRegisteredClaimNames.Sub,   usuarioId.ToString()),
       new Claim(JwtRegisteredClaimNames.Email, email),
       new Claim(ClaimTypes.Role,               role),
       new Claim(JwtRegisteredClaimNames.Jti,   Guid.NewGuid().ToString())
     };
+
+    if (empresaId.HasValue)
+    {
+      claims.Add(new Claim("empresa_id", empresaId.Value.ToString()));
+    }
 
 
     var token = new JwtSecurityToken(
