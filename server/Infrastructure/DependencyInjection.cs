@@ -6,6 +6,7 @@ using SkillSwap.Core.Empresas.Ports.Out;
 using SkillSwap.Infrastructure.Data;
 using SkillSwap.Infrastructure.Repositories;
 using SkillSwap.Infrastructure.Security;
+using SkillSwap.Infrastructure.Services;
 
 namespace SkillSwap.Infrastructure;
 
@@ -22,6 +23,7 @@ public static class DependencyInjection
         services.AddScoped<IEmailService, SmtpEmailService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<ITenantService, TenantService>();
+        services.AddScoped<IMigrationService, MigrationService>();
 
         services.AddHttpContextAccessor();
 
@@ -30,8 +32,18 @@ public static class DependencyInjection
                 configuration.GetConnectionString("Master")
             ));
 
-        services.AddDbContext<SkillSwapDbContext>(options =>
-            options.UseSqlite("Data Source=skillswap.db"));
+        services.AddScoped<SkillSwapDbContext>(provider =>
+        {
+            var tenantService = provider.GetRequiredService<ITenantService>();
+            var bancoDados = tenantService.ObterBancoDeDadosAsync().GetAwaiter().GetResult();
+
+            var options = new DbContextOptionsBuilder<SkillSwapDbContext>()
+                .UseSqlite($"Data Source={bancoDados}.db")
+                .Options;
+
+            return new SkillSwapDbContext(options);
+        });
+
 
         return services;
     }
