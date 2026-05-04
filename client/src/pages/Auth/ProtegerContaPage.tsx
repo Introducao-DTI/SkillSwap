@@ -1,7 +1,6 @@
 import { Button } from "../../components/Button/Button";
 import { CaixaDeTexto } from "../../components/Auth/CaixaDeTexto";
 import { Input } from "../../components/Input/Input";
-import { PageLayout } from "../../components/PageLayout";
 import { CorpoPrincipal } from "../../components/Auth/CorpoPrincipal";
 import { Header } from "../../components/Auth/Header";
 import { RodapeAcesso } from "../../components/Auth/RodapeAcesso";
@@ -27,6 +26,7 @@ import { usuarioApi } from "../../api/usuarioApi";
 import { useState } from "react";
 import { conviteApi } from "../../api/conviteApi";
 import { setEtapaCadastro } from "../../store/slices/authSlice";
+import { AuthLayout } from "../../components/Auth/AuthLayout";
 
 const ProtegerContaPage = () => {
   const navigate = useNavigate();
@@ -100,7 +100,7 @@ const ProtegerContaPage = () => {
   };
 
   return (
-    <PageLayout>
+    <AuthLayout>
       <Header>
         <TituloHeader>
           Vamos proteger a sua conta para maior segurança
@@ -152,7 +152,7 @@ const ProtegerContaPage = () => {
       </CorpoPrincipal>
 
       <RodapeAcesso />
-    </PageLayout>
+    </AuthLayout>
   );
 };
 

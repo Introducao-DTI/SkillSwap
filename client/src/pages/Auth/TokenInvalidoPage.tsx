@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks";
 import { CorpoPrincipal } from "../../components/Auth/CorpoPrincipal";
 import { Header } from "../../components/Auth/Header";
-import { PageLayout } from "../../components/PageLayout";
 import { RodapeAcesso } from "../../components/Auth/RodapeAcesso";
 import { TituloHeader } from "../../components/Auth/TituloHeader";
 import { CaixaDeTexto } from "../../components/Auth/CaixaDeTexto";
+import { AuthLayout } from "../../components/Auth/AuthLayout";
 
 const TokenInvalidoPage = () => {
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ const TokenInvalidoPage = () => {
   };
 
   return (
-    <PageLayout>
+    <AuthLayout>
       <Header>
         <TituloHeader>Token Inválido</TituloHeader>
         <CaixaDeTexto>{mensagem()}</CaixaDeTexto>
@@ -42,7 +42,7 @@ const TokenInvalidoPage = () => {
       </CorpoPrincipal>
 
       <RodapeAcesso />
-    </PageLayout>
+    </AuthLayout>
   );
 };
 
